@@ -452,9 +452,9 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
 <script>
 const DATA={
   marches:[
-    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au S1 2026",excerpt:"La BRVM affiche une performance solide avec un indice Composite à 218,46 pts. SONATEL progresse de +8,3% depuis janvier.",date:"7 Juin 2026",read:"8 min",det:0, coverType:"img", coverUrl:"http://googleusercontent.com/image_collection/image_retrieval/16037633473384356304"},
-    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA et des semi-conducteurs se poursuit",excerpt:"Nvidia, Microsoft et Apple tirent l'indice vers de nouveaux records. Ce que cela signifie pour l'investisseur africain.",date:"6 Juin 2026",read:"6 min",det:1, coverType:"img", coverUrl:"http://googleusercontent.com/image_collection/image_retrieval/10060372124694309579"},
-    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 200 pts : banques et luxe tirent Paris malgré les tensions",excerpt:"BNP Paribas, LVMH et TotalEnergies soutiennent l'indice. Analyse des implications pour les économies africaines francophones.",date:"6 Juin 2026",read:"5 min",det:2, coverType:"img", coverUrl:"http://googleusercontent.com/image_collection/image_retrieval/1791848916139425869"}
+    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au S1 2026",excerpt:"La BRVM affiche une performance solide avec un indice Composite à 218,46 pts.",date:"7 Juin 2026",read:"8 min",det:0, coverType:"img", coverUrl:"https://images.unsplash.com/photo-1642543348745-0d65b1c5f8ec?q=80&w=800"},
+    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA se poursuit",excerpt:"Nvidia, Microsoft et Apple tirent l'indice vers de nouveaux records.",date:"6 Juin 2026",read:"6 min",det:1, coverType:"img", coverUrl:"https://images.unsplash.com/photo-1590283603385-fc7ffb096435?q=80&w=800"},
+    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 200 pts : banques et luxe tirent Paris",excerpt:"BNP Paribas, LVMH et TotalEnergies soutiennent l'indice.",date:"6 Juin 2026",read:"5 min",det:2, coverType:"img", coverUrl:"https://images.unsplash.com/photo-1569012871812-f38ee6bfe5a3?q=80&w=800"}
   ],
   economie:[
     {emoji:"🇸🇳",cat:"Sénégal — Pétrole",title:"Sangomar en production : les revenus pétroliers transforment le budget",excerpt:"Le champ offshore de Sangomar génère ses premières royalties. Le gouvernement arbitre entre investissement et fonds souverain.",date:"7 Juin 2026",read:"7 min",det:3, coverType:"img", coverUrl:"http://googleusercontent.com/image_collection/image_retrieval/7832543258413921784"},
@@ -618,9 +618,9 @@ function renderArts(sec){
   g.innerHTML=DATA[sec].map((a,i)=>{
     const hasDetail=(typeof a.det==='number');
     
-    // Rendu dynamique de la vignette (Image vs Dégradé)
+    // Logique pour afficher soit une image, soit un dégradé
     const coverHtml = a.coverType === 'img'
-      ? `<img src="${a.coverUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`
+      ? `<img src="${a.coverUrl}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;">`
       : `<div class="cover-grad ${a.coverClass}"><span class="cg-icon">${a.emoji}</span></div>`;
 
     return`<article class="art"${hasDetail?` onclick="openModal(${a.det})"`:''}>
