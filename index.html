@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,600&family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -38,31 +40,16 @@ body{background:var(--bg);background-image:radial-gradient(ellipse 60% 40% at 20
 .modal-back:hover{border-color:var(--blue);color:var(--blue)}
 .modal-pub{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;background:linear-gradient(90deg,var(--blue),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-/* --- STYLES DES COUVERTURES (IMAGES & DÉGRADÉS) --- */
+/* --- STYLES DES COUVERTURES DEGRADES --- */
 .modal-hero{width:100%;height:320px;overflow:hidden;position:relative}
-.modal-hero img{width:100%;height:100%;object-fit:cover;display:block; filter: sepia(30%) hue-rotate(45deg) saturate(110%) contrast(105%);}
 .modal-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,var(--bg))}
-.feat-img img, .art-img-wrap img {
-  width:100%;height:100%;object-fit:cover;display:block;
-  filter: sepia(30%) hue-rotate(45deg) saturate(110%) contrast(105%);
-  transition:transform .5s ease, filter .5s ease;
-}
-.feat-card:hover .feat-img img, .art:hover .art-img-wrap img {
-  transform:scale(1.05);
-  filter: sepia(20%) hue-rotate(45deg) saturate(120%) contrast(110%);
-}
-
-.cover-grad {
-  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-  transition: transform .5s ease;
-}
+.cover-grad {width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform .5s ease;}
 .art:hover .cover-grad { transform: scale(1.05); }
-.cg-1 { background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue-ll) 100%); }
-.cg-2 { background: linear-gradient(135deg, #1A1917 0%, #4A4844 100%); }
-.cg-3 { background: linear-gradient(135deg, var(--gold-d) 0%, var(--gold-l) 100%); }
-.cg-4 { background: linear-gradient(135deg, #2c4228 0%, #4a6b43 100%); } /* Olive vert */
+.cg-1, .cg-brvm, .cg-pse, .cg-interet { background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue-ll) 100%); }
+.cg-2, .cg-sp500, .cg-bceao, .cg-crise { background: linear-gradient(135deg, #1A1917 0%, #4A4844 100%); }
+.cg-3, .cg-cac40, .cg-zlecaf, .cg-or { background: linear-gradient(135deg, var(--gold-d) 0%, var(--gold-l) 100%); }
+.cg-4, .cg-sangomar, .cg-educ, .cg-petrole, .cg-fmi { background: linear-gradient(135deg, #2c4228 0%, #4a6b43 100%); }
 .cg-icon { font-size: 54px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
-/* ------------------------------------------------ */
 
 .modal-body{max-width:820px;margin:0 auto;padding:48px 5% 80px}
 .modal-cat-lbl{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:14px}
@@ -132,14 +119,18 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 5%;h
 .read-more:hover{gap:14px}
 .rm-arr{transition:transform .3s}
 .read-more:hover .rm-arr{transform:translateX(4px)}
+
+/* Mini-Dashboard Marchés Styles */
 .mkt-bar{padding:40px 5% 0;max-width:1440px;margin:0 auto}
 .mkt-inner{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
-.mkt-item{background:var(--card);padding:18px 22px;transition:background .3s}
+.mkt-item{background:var(--card);padding:18px 22px;transition:background .3s; display:flex; flex-direction:column;}
 .mkt-item:hover{background:var(--bg2)}
 .mkt-name{font-size:9.5px;font-weight:600;letter-spacing:2px;color:var(--text-d);text-transform:uppercase;margin-bottom:6px}
 .mkt-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px}
 .mkt-chg{font-size:11px;font-weight:500;margin-top:4px}
 .up{color:var(--green)}.dn{color:var(--red)}
+
+/* Section Headers */
 .sec-hdr{display:flex;align-items:center;gap:24px;padding:68px 5% 36px;max-width:1440px;margin:0 auto}
 .sec-hdr::before{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
 .sec-hdr::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
@@ -149,24 +140,37 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 5%;h
 .sec-ttl-b{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;background:linear-gradient(120deg,var(--blue-d),var(--blue),var(--blue-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .sec-desc{padding:0 5% 24px;max-width:700px;margin:0 auto;font-size:13.5px;font-weight:300;color:var(--text-m);line-height:1.8}
 .sec-refresh-row{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 5% 16px;max-width:1440px;margin:0 auto}
-.btn-refresh{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--border);color:var(--text-m);padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.btn-refresh:hover{border-color:var(--gold);color:var(--gold)}
-.btn-refresh:disabled{opacity:.4;cursor:not-allowed}
-.spinner{display:none;width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.last-upd{font-size:10px;color:var(--text-d)}
-.sub-hdr{padding:40px 5% 20px;max-width:1440px;margin:0 auto}
-.sub-hdr h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--blue);padding-bottom:12px;border-bottom:1px solid var(--border)}
+
+/* D3.js Map Styles */
+.map-wrap{padding:0 5%;max-width:1440px;margin:0 auto;display:flex;gap:20px;flex-wrap:wrap;}
+#africa-map{flex:2;min-width:300px;background:var(--card);border:1px solid var(--border);height:500px;position:relative;}
+.map-panel{flex:1;min-width:250px;background:var(--card);border:1px solid var(--border);padding:30px;}
+.map-panel h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--blue);margin-bottom:20px;}
+.data-row{display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:12px 0;font-size:14px;color:var(--text-m);}
+.data-row span:last-child{font-weight:600;color:var(--text);}
+.country-path{stroke:#fff;stroke-width:0.5px;transition:fill 0.2s, stroke-width 0.2s;cursor:pointer;}
+.country-path:hover{stroke:var(--gold-d);stroke-width:1.5px;}
+
+/* Glossary Styles */
+.gloss-input{width:100%;max-width:400px;padding:12px 18px;margin-bottom:24px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .3s;}
+.gloss-input:focus{border-color:var(--blue);}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);}
+.gloss-card{background:var(--card);padding:22px;}
+.gloss-term{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--blue);margin-bottom:6px;}
+.gloss-theme{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold-d);margin-bottom:10px;}
+.gloss-def{font-size:12.5px;font-weight:300;color:var(--text-m);line-height:1.7;}
+
+/* Grids */
 .grid-wrap{padding:0 5%;max-width:1440px;margin:0 auto}
 .arts-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
 .arts-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
-.art{background:var(--card);cursor:pointer;transition:background .3s;position:relative;display:flex;flex-direction:column}
+.art{background:var(--card);cursor:pointer;transition:background .3s;position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;}
 .art:hover{background:var(--card-h)}
 .art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:transparent;transition:background .35s}
 .art:hover::after{background:var(--gold-d)}
 .art-img-wrap{width:100%;height:180px;overflow:hidden;background:var(--border);position:relative}
 .art-body{padding:22px 26px 22px;flex:1;display:flex;flex-direction:column}
-.art-cat{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:10px}
+.art-cat{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:10px;text-transform:uppercase;}
 .art-cat.g{color:var(--gold-d)}
 .art-ttl{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;line-height:1.3;color:var(--text);margin-bottom:10px;transition:color .3s;flex:1}
 .art:hover .art-ttl{color:var(--blue)}
@@ -175,7 +179,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 5%;h
 .art-meta{font-size:10px;color:var(--text-d)}
 .art-arr{width:28px;height:28px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-d);transition:all .3s;flex-shrink:0}
 .art:hover .art-arr{border-color:var(--blue);background:var(--blue);color:#fff}
-.art-detail-lbl{font-size:10px;font-weight:500;letter-spacing:1.5px;color:var(--gold-d);margin-top:8px;text-transform:uppercase}
+
+/* Divers */
 .career-card{background:var(--card);padding:28px;display:flex;flex-direction:column;transition:background .3s;border:1px solid transparent}
 .career-card:hover{background:var(--bg2);border-color:var(--border)}
 .career-icon{font-size:30px;margin-bottom:12px;line-height:1}
@@ -240,7 +245,7 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
 .fu{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
 .fu.vis{opacity:1;transform:translateY(0)}
 @media(max-width:1100px){.nav-links{display:none}.ham{display:flex}.hero-grid{grid-template-columns:1fr;gap:40px}.hero-headline{font-size:52px}.mkt-inner{grid-template-columns:repeat(3,1fr)}.arts-4{grid-template-columns:repeat(2,1fr)}.arts-3{grid-template-columns:repeat(2,1fr)}.ft-top{grid-template-columns:1fr 1fr;gap:36px}.bio-inner{grid-template-columns:1fr;gap:36px}.bio-avatar{flex-direction:row;gap:28px}.art-highlight ul{grid-template-columns:1fr}}
-@media(max-width:768px){.arts-3,.arts-4{grid-template-columns:1fr}.mkt-inner{grid-template-columns:repeat(2,1fr)}.hero{padding:48px 5% 36px}.cta-inner{padding:48px 24px}.cta-form{flex-direction:column}.cta-input{border-right:1px solid var(--border);border-bottom:none}.sec-ttl,.sec-ttl-b{font-size:30px}}
+@media(max-width:768px){.arts-3,.arts-4{grid-template-columns:1fr}.mkt-inner{grid-template-columns:repeat(2,1fr)}.hero{padding:48px 5% 36px}.cta-inner{padding:48px 24px}.cta-form{flex-direction:column}.cta-input{border-right:1px solid var(--border);border-bottom:none}.sec-ttl,.sec-ttl-b{font-size:30px}.map-wrap{flex-direction:column;}}
 @media(max-width:480px){nav{padding:0 20px}.hero{padding:40px 20px 32px}.grid-wrap{padding:0 20px}.ft-top{grid-template-columns:1fr;gap:28px}.ft-bottom{flex-direction:column;gap:16px;text-align:center}.bio-avatar{flex-direction:column;text-align:center}.bio-name{font-size:38px}.cta-section{padding:48px 20px}}
 </style>
 </head>
@@ -335,7 +340,7 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
         <p class="feat-excerpt">Entre la consolidation des bourses africaines, le rally technologique américain et les incertitudes européennes, les marchés d'investissement traversent une transformation structurelle en 2026.</p>
         <div class="feat-footer">
           <span class="feat-meta">7 Juin 2026 · 8 min de lecture</span>
-          <a href="#" class="read-more" onclick="event.stopPropagation();openModal(0)">Lire la suite <svg class="rm-arr" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="read-more">Lire la suite <svg class="rm-arr" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </div>
     </div>
@@ -343,37 +348,51 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
 </section>
 
 <div class="mkt-bar fu">
-  <div class="mkt-inner">
-    <div class="mkt-item"><div class="mkt-name">BRVM Composite</div><div class="mkt-val">218,46</div><div class="mkt-chg up">▲ +1,2%</div></div>
-    <div class="mkt-item"><div class="mkt-name">S&amp;P 500</div><div class="mkt-val">5 421</div><div class="mkt-chg up">▲ +0,4%</div></div>
-    <div class="mkt-item"><div class="mkt-name">CAC 40</div><div class="mkt-val">8 214</div><div class="mkt-chg up">▲ +0,3%</div></div>
-    <div class="mkt-item"><div class="mkt-name">Or / Ounce</div><div class="mkt-val">2 480 $</div><div class="mkt-chg up">▲ +0,5%</div></div>
-    <div class="mkt-item"><div class="mkt-name">Brent</div><div class="mkt-val">83,14 $</div><div class="mkt-chg dn">▼ −0,7%</div></div>
+  <div class="mkt-inner" id="markets-bar">
+    <div style="padding: 20px; font-size: 12px; color: var(--text-m);">Connexion API Alpha Vantage en cours...</div>
+  </div>
+</div>
+
+<div class="sec-hdr fu" id="carte"><div class="sec-hdr-c"><span class="sec-num">◆ CARTE</span><h2 class="sec-ttl-b">Indicateurs Macroéconomiques Africains</h2></div></div>
+<div class="map-wrap fu">
+  <div id="africa-map"></div>
+  <div class="map-panel">
+    <h3 id="mp-title">Sélectionnez un pays</h3>
+    <p style="font-size:13px; font-weight:300; color:var(--text-m); margin-bottom:20px; line-height: 1.6;">Survolez ou cliquez sur un pays de la carte pour afficher ses données économiques récentes.</p>
+    <div id="panel-data" style="display:none;">
+      <div class="data-row"><span>PIB / Habitant</span><span id="pd-pib"></span></div>
+      <div class="data-row"><span>Croissance (2026)</span><span id="pd-croissance"></span></div>
+      <div class="data-row"><span>Inflation</span><span id="pd-inflation"></span></div>
+      <div class="data-row"><span>Devise</span><span id="pd-devise"></span></div>
+    </div>
   </div>
 </div>
 
 <div class="sec-hdr fu" id="marches"><div class="sec-hdr-c"><span class="sec-num">◆ 01 / 05</span><h2 class="sec-ttl">Marchés &amp; Investissements</h2></div></div>
-<div class="sec-refresh-row"><span class="last-upd" id="upd-marches">—</span><button class="btn-refresh" onclick="updateSection('marches')" data-sec="marches"><span class="spinner" id="spin-marches"></span>↻ Actualiser</button></div>
 <div class="grid-wrap"><div class="arts-3 fu" id="grid-marches"></div></div>
 
-<div class="sec-hdr fu" id="economie"><div class="sec-hdr-c"><span class="sec-num">◆ 02 / 05</span><h2 class="sec-ttl-b">Économie Sénégal · UEMOA · Monde</h2></div></div>
-<div class="sec-refresh-row"><span class="last-upd" id="upd-economie">—</span><button class="btn-refresh" onclick="updateSection('economie')" data-sec="economie"><span class="spinner" id="spin-economie"></span>↻ Actualiser</button></div>
+<div class="sec-hdr fu" id="economie"><div class="sec-hdr-c"><span class="sec-num">◆ 02 / 05</span><h2 class="sec-ttl-b">Actualités Économiques (En Direct)</h2></div></div>
+<p class="sec-desc fu">Ces actualités sont générées en temps réel via NewsAPI, centrées sur la finance et l'économie du continent africain.</p>
 <div class="grid-wrap"><div class="arts-3 fu" id="grid-economie"></div></div>
 
 <div class="sec-hdr fu" id="articles"><div class="sec-hdr-c"><span class="sec-num">◆ 03 / 05</span><h2 class="sec-ttl">Articles Thématiques</h2></div></div>
-<div class="sec-refresh-row"><span class="last-upd" id="upd-articles">—</span><button class="btn-refresh" onclick="updateSection('articles')" data-sec="articles"><span class="spinner" id="spin-articles"></span>↻ Actualiser</button></div>
 <div class="grid-wrap"><div class="arts-4 fu" id="grid-articles"></div></div>
 
 <div class="sec-hdr fu" id="metiers"><div class="sec-hdr-c"><span class="sec-num">◆ 04 / 05</span><h2 class="sec-ttl-b">Métiers Après un Master Finance</h2></div></div>
-<p class="sec-desc fu">Un master en finance ouvre l'accès aux carrières les plus recherchées de l'économie mondiale. Découvrez les débouchés classiques et les métiers du Private Equity — secteur en pleine expansion en Afrique.</p>
+<p class="sec-desc fu">Un master en finance ouvre l'accès aux carrières les plus recherchées de l'économie mondiale. Découvrez les débouchés classiques et les métiers du Private Equity.</p>
 <div class="sub-hdr fu"><h3>🏛️ Finance Classique &amp; Banque</h3></div>
 <div class="grid-wrap"><div class="arts-3 fu" id="grid-classic" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)"></div></div>
 <div class="sub-hdr fu" style="padding-top:28px"><h3>💎 Private Equity &amp; Investissement</h3></div>
 <div class="grid-wrap"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)" class="fu" id="grid-pe"></div></div>
 
 <div class="sec-hdr fu" id="penseurs"><div class="sec-hdr-c"><span class="sec-num">◆ 05 / 05</span><h2 class="sec-ttl">Grands Penseurs Économiques</h2></div></div>
-<p class="sec-desc fu">Ces économistes ont façonné notre compréhension du monde — leurs idées continuent de guider banques centrales, politiques économiques et stratégies d'investissement à travers le globe.</p>
 <div class="grid-wrap"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)" class="fu" id="grid-penseurs"></div></div>
+
+<div class="sec-hdr fu" id="glossaire"><div class="sec-hdr-c"><span class="sec-num">◆ GLOSSAIRE</span><h2 class="sec-ttl-b">Dictionnaire Financier Interactif</h2></div></div>
+<div class="grid-wrap fu">
+  <input type="text" id="gloss-search" class="gloss-input" placeholder="Rechercher un terme (ex: BRVM, Eurobonds)...">
+  <div class="gloss-grid" id="gloss-grid"></div>
+</div>
 
 <section class="cta-section fu" id="subscribe">
   <div class="cta-inner">
@@ -450,257 +469,250 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
 </footer>
 
 <script>
-const DATA={
+// --- CLÉS API ---
+const ALPHA_VANTAGE_KEY = 'RPVIVHOXNBCGVUFB';
+const NEWS_API_KEY = '5e155aa4091447518330825d99823c12';
+
+// --- DONNÉES DE BASE ---
+let DATA={
   marches:[
-    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au S1 2026",excerpt:"La BRVM affiche une performance solide avec un indice Composite à 218,46 pts. SONATEL progresse de +8,3% depuis janvier.",date:"7 Juin 2026",read:"8 min",det:0, coverType:"grad", coverClass:"cg-brvm"},
-    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA et des semi-conducteurs se poursuit",excerpt:"Nvidia, Microsoft et Apple tirent l'indice vers de nouveaux records. Ce que cela signifie pour l'investisseur africain.",date:"6 Juin 2026",read:"6 min",det:1, coverType:"grad", coverClass:"cg-sp500"},
-    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 200 pts : banques et luxe tirent Paris malgré les tensions",excerpt:"BNP Paribas, LVMH et TotalEnergies soutiennent l'indice. Analyse des implications pour les économies africaines francophones.",date:"6 Juin 2026",read:"5 min",det:2, coverType:"grad", coverClass:"cg-cac40"}
+    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au S1 2026",excerpt:"La BRVM affiche une performance solide avec un indice Composite à 218,46 pts.",date:"7 Juin 2026",read:"8 min",det:0, coverType:"grad", coverClass:"cg-brvm"},
+    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA se poursuit",excerpt:"Nvidia, Microsoft et Apple tirent l'indice vers de nouveaux records.",date:"6 Juin 2026",read:"6 min",det:1, coverType:"grad", coverClass:"cg-sp500"},
+    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 200 pts : banques et luxe tirent Paris",excerpt:"BNP Paribas, LVMH et TotalEnergies soutiennent l'indice.",date:"6 Juin 2026",read:"5 min",det:2, coverType:"grad", coverClass:"cg-cac40"}
   ],
-  economie:[
-    {emoji:"🇸🇳",cat:"Sénégal — Pétrole",title:"Sangomar en production : les revenus pétroliers transforment le budget",excerpt:"Le champ offshore de Sangomar génère ses premières royalties. Le gouvernement arbitre entre investissement et fonds souverain.",date:"7 Juin 2026",read:"7 min",det:3, coverType:"grad", coverClass:"cg-sangomar"},
-    {emoji:"🏗️",cat:"Sénégal — Infrastructures",title:"Plan Sénégal Émergent 2035 : bilan des grands chantiers et impact",excerpt:"Autoroutes, port de Ndayane, TER : le PSE avance. Analyse des projets phares et de leur contribution à la croissance.",date:"5 Juin 2026",read:"6 min",det:4, coverType:"grad", coverClass:"cg-pse"},
-    {emoji:"👨‍🎓",cat:"Sénégal — Capital humain",title:"Education et emploi au Sénégal : défis d'une économie en transition",excerpt:"Avec les revenus pétroliers, le Sénégal doit investir massivement dans son capital humain et la formation professionnelle.",date:"4 Juin 2026",read:"5 min",det:5, coverType:"grad", coverClass:"cg-educ"},
-    {emoji:"🌍",cat:"UEMOA & BCEAO",title:"BCEAO : taux à 3,5% — implications pour les 8 pays membres",excerpt:"La Banque Centrale reconduit sa politique monétaire. Ce statu quo impacte différemment le Sénégal et la sous-région.",date:"5 Juin 2026",read:"5 min",det:6, coverType:"grad", coverClass:"cg-bceao"},
-    {emoji:"🤝",cat:"Afrique — ZLECAf",title:"Zone de libre-échange africaine : les échanges intra-africains progressent",excerpt:"Les premières données confirment la montée en puissance de la ZLECAf. Commerce entre États membres en hausse historique.",date:"4 Juin 2026",read:"5 min",det:7, coverType:"grad", coverClass:"cg-zlecaf"},
-    {emoji:"🌐",cat:"Économie Mondiale",title:"FMI : croissance mondiale à 3,2% — l'Afrique subsaharienne en tête",excerpt:"Tensions commerciales USA-Chine, ralentissement européen, mais une Afrique subsaharienne dynamique grâce à ses ressources.",date:"3 Juin 2026",read:"6 min",det:8, coverType:"grad", coverClass:"cg-fmi"}
-  ],
+  economie:[], // Sera rempli par l'API
   articles:[
-    {emoji:"🥇",cat:"L'Or",title:"L'or à 2 480$/once : valeur refuge et couverture contre l'inflation",excerpt:"Achats massifs des banques centrales : décryptage du métal précieux et stratégies pour s'y exposer depuis l'Afrique.",date:"6 Juin 2026",read:"8 min", coverType:"grad", coverClass:"cg-or"},
-    {emoji:"🛢️",cat:"Le Pétrole",title:"Pétrole, transition énergétique et nouveaux producteurs africains",excerpt:"Sangomar, Tilenga : l'Afrique recompose sa carte énergétique. Analyse du marché Brent et des défis des nouveaux producteurs.",date:"5 Juin 2026",read:"9 min", coverType:"grad", coverClass:"cg-petrole"},
-    {emoji:"📐",cat:"Éducation Financière",title:"Les intérêts composés : la 8ème merveille du monde appliquée à l'Afrique",excerpt:"50 000 FCFA par mois pendant 20 ans à 8% de rendement — le résultat va vous surprendre. Guide pratique de l'investisseur.",date:"4 Juin 2026",read:"7 min", coverType:"grad", coverClass:"cg-interet"},
-    {emoji:"💥",cat:"Histoire Financière",title:"La crise de 2008 : anatomie d'un effondrement et leçons africaines",excerpt:"15 ans après Lehman Brothers : retour sur la crise qui continue de façonner les régulations bancaires africaines aujourd'hui.",date:"3 Juin 2026",read:"10 min", coverType:"grad", coverClass:"cg-crise"}
+    {emoji:"🥇",cat:"L'Or",title:"L'or à 2 480$/once : valeur refuge et couverture",excerpt:"Achats massifs des banques centrales : décryptage du métal précieux.",date:"6 Juin 2026",read:"8 min", coverType:"grad", coverClass:"cg-or"},
+    {emoji:"🛢️",cat:"Le Pétrole",title:"Pétrole et nouveaux producteurs africains",excerpt:"Sangomar, Tilenga : l'Afrique recompose sa carte énergétique.",date:"5 Juin 2026",read:"9 min", coverType:"grad", coverClass:"cg-petrole"},
+    {emoji:"📐",cat:"Éducation Financière",title:"Les intérêts composés : la 8ème merveille",excerpt:"Guide pratique de l'investisseur sur le long terme.",date:"4 Juin 2026",read:"7 min", coverType:"grad", coverClass:"cg-interet"},
+    {emoji:"💥",cat:"Histoire Financière",title:"La crise de 2008 : anatomie d'un effondrement",excerpt:"Retour sur la crise qui continue de façonner les régulations.",date:"3 Juin 2026",read:"10 min", coverType:"grad", coverClass:"cg-crise"}
   ]
 };
 
 const DETAILS=[
-  {cat:"📈 BRVM — Performances",emoji:"📈",coverType:"grad",coverClass:"cg-brvm",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au premier semestre 2026",date:"7 Juin 2026",read:"8 min de lecture",blocks:[
-    {t:"intro",v:"La Bourse Régionale des Valeurs Mobilières d'Abidjan (BRVM) confirme sa dynamique haussière. Avec un indice BRVM Composite à 218,46 points en progression de +7,4% depuis janvier, la bourse de l'UEMOA affiche une résilience remarquable dans un contexte mondial incertain."},
-    {t:"sub",v:"Les valeurs vedettes du T1 2026"},
-    {t:"p",v:"SONATEL (Sénégal Télécom) s'impose comme la locomotive de la BRVM. Cotée à 14 500 FCFA par action, elle affiche +8,3% depuis janvier, portée par la croissance du Mobile Money et l'expansion d'Orange Money en Afrique de l'Ouest. Sa capitalisation dépasse 1 200 milliards FCFA — première capitalisation de la bourse régionale."},
-    {t:"p",v:"ORANGE CI suit avec +5,2% de performance. ECOBANK Transnational Incorporated (ETI), la plus grande banque panafricaine cotée sur 3 bourses africaines, complète ce podium avec +6,7%, profitant de la reprise dans ses 33 marchés d'Afrique subsaharienne."},
-    {t:"stats",v:"📊 Chiffres clés — BRVM au 7 Juin 2026",items:["BRVM Composite : 218,46 pts (+7,4% YTD)","BRVM 10 : 342,18 pts (+6,1% YTD)","Volume moyen hebdo : 2,4 Mds FCFA","Capitalisation totale : 11 200 Mds FCFA"]},
-    {t:"sub",v:"Comment investir à la BRVM depuis le Sénégal ?"},
-    {t:"p",v:"Pour s'exposer à la BRVM, plusieurs options : ouvrir un compte-titres auprès d'une SGI agréée (SGI-BIS, SGI-Senfinance, BICS), acheter des parts d'OPCVM investis en actions BRVM, ou via les Plans d'Épargne en Actions (PEA). Les commissions de courtage oscillent entre 0,6% et 1,2% de la transaction."},
-    {t:"p",v:"Les analystes tablent sur un indice BRVM Composite entre 225 et 232 points d'ici décembre 2026, sous réserve d'une stabilité politique dans la zone et d'une poursuite de la dynamique de croissance régionale estimée à +6,2%."}
-  ]},
-  {cat:"🇺🇸 S&P 500 — Marchés US",emoji:"🇺🇸",coverType:"grad",coverClass:"cg-sp500",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA et des semi-conducteurs se poursuit en 2026",date:"6 Juin 2026",read:"6 min de lecture",blocks:[
-    {t:"intro",v:"L'indice S&P 500 a franchi le cap symbolique des 5 400 points — un nouveau record historique — porté par les résultats trimestriels exceptionnels des géants de la technologie et une inflation en normalisation progressive."},
-    {t:"sub",v:"Le rally de l'intelligence artificielle"},
-    {t:"p",v:"Nvidia reste le symbole de ce bull market : capitalisation au-dessus de 3 000 milliards de dollars. Microsoft (+18% YTD), Apple (+12% YTD) et Alphabet (+15% YTD) complètent un secteur tech qui représente 35% de la capitalisation totale du S&P 500."},
-    {t:"stats",v:"📊 Le S&P 500 en chiffres",items:["Niveau : 5 421 pts (+12,3% YTD)","PE ratio : 22,4x les bénéfices 2026","Volatilité VIX : 14,2 (calme)","Meilleur secteur : Technologie +18%"]},
-    {t:"sub",v:"Impact sur les investisseurs africains"},
-    {t:"p",v:"Un S&P 500 en hausse renforce le dollar, ce qui renchérit les importations africaines (pétrole, équipements). Pour s'exposer, des ETF comme le SPDR S&P 500 (SPY) ou le iShares Core S&P 500 (IVV) sont accessibles via Interactive Brokers, eToro ou Revolut — sous réserve de la réglementation de change applicable."}
-  ]},
-  {cat:"🇫🇷 CAC 40 — Marchés Européens",emoji:"🇫🇷",coverType:"grad",coverClass:"cg-cac40",title:"CAC 40 à 8 200 pts : banques et luxe tirent la bourse parisienne malgré les tensions géopolitiques",date:"6 Juin 2026",read:"5 min de lecture",blocks:[
-    {t:"intro",v:"Le CAC 40 flirte avec les 8 200 points (+5,8% depuis janvier). Cette progression masque des disparités sectorielles : les valeurs bancaires et du luxe tirent l'indice, tandis que les industriels pâtissent d'un contexte géopolitique européen tendu."},
-    {t:"sub",v:"Luxe et banques : les locomotives du CAC 40"},
-    {t:"p",v:"LVMH résiste grâce à la vigueur des marchés américain et japonais. Hermès (+9% YTD), Kering (+4% YTD) et BNP Paribas (+11% YTD) — ce dernier très présent en Afrique subsaharienne — soutiennent l'indice."},
-    {t:"stats",v:"📊 Le CAC 40 en chiffres",items:["Niveau : 8 214 pts (+5,8% YTD)","Luxe : +8,2% YTD","Rendement dividende moyen : 3,1%","EUR/USD : 1,082 (+1,2%)"]},
-    {t:"p",v:"TotalEnergies (CAC 40) est actionnaire majeur du champ Sangomar au Sénégal. BNP et Société Générale financent le commerce international africain. La filiale Sonatel est détenue à 42,3% par Orange SA, cotée au CAC 40 — raison de plus pour suivre cet indice depuis Dakar."}
-  ]},
-  {cat:"🇸🇳 Sénégal — Pétrole",emoji:"🇸🇳",coverType:"grad",coverClass:"cg-sangomar",title:"Sangomar en production : les revenus pétroliers transforment le budget sénégalais 2026",date:"7 Juin 2026",read:"7 min de lecture",blocks:[
-    {t:"intro",v:"Le champ pétrolier offshore de Sangomar, entré en production fin 2024, génère ses premières royalties significatives en 2026. Une transformation structurelle pour les finances publiques sénégalaises — et un test de maturité institutionnelle pour un pays qui a longtemps regardé ses voisins gérer, parfois mal, la richesse pétrolière."},
-    {t:"sub",v:"Les chiffres de la transformation budgétaire"},
-    {t:"p",v:"Sangomar produit actuellement environ 100 000 barils/jour, avec des projections de 120 000 barils/jour d'ici fin 2026. Au prix actuel du Brent (83$/baril), et avec un taux de royalties de l'État estimé à 18-22%, les recettes directes pour le Trésor sénégalais s'élèvent à environ 450-520 milliards FCFA sur l'année 2026. Un chiffre significatif pour un budget national de moins de 5 000 milliards FCFA."},
-    {t:"stats",v:"📊 Chiffres clés — Pétrole sénégalais 2026",items:["Production Sangomar : ~100 000 bbl/jour","Recettes estimées 2026 : 450-520 Mds FCFA","Part de l'État : ~18-22% des royalties","Partenaire opérateur : Woodside Energy (Australie)"]},
-    {t:"sub",v:"Fonds souverain ou dépenses courantes ? Le grand arbitrage"},
-    {t:"p",v:"Le gouvernement sénégalais fait face à un choix stratégique fondamental : consommer les revenus pétroliers pour financer des dépenses courantes (subventions, salaires, fonctionnement) ou les épargner dans un fonds souverain intergénérationnel. La Norvège a fait le choix de l'épargne systématique — son fonds souverain pèse aujourd'hui plus de 1 700 milliards de dollars. Le Nigeria a préféré la consommation immédiate — avec des résultats décevants."},
-    {t:"p",v:"Le risque de la 'maladie hollandaise' est réel : un afflux massif de devises peut apprécier la monnaie locale, pénaliser les exportations non-pétrolières et fragiliser l'agriculture et l'industrie. La gestion transparente et institutionnellement robuste de ces ressources est la condition d'un développement économique durable pour le Sénégal."}
-  ]},
-  {cat:"🏗️ Sénégal — Infrastructures",emoji:"🏗️",coverType:"grad",coverClass:"cg-pse",title:"Plan Sénégal Émergent 2035 : bilan des grands chantiers et impact sur la croissance",date:"5 Juin 2026",read:"6 min de lecture",blocks:[
-    {t:"intro",v:"Lancé en 2014 sous Macky Sall et poursuivi par l'administration actuelle, le Plan Sénégal Émergent (PSE) constitue la feuille de route du développement sénégalais à l'horizon 2035. Au cœur de la stratégie : une accélération massive des investissements en infrastructures pour soutenir une croissance durable."},
-    {t:"sub",v:"Les projets phares du PSE en 2026"},
-    {t:"p",v:"Le Port de Ndayane, à 50 km de Dakar, est l'un des chantiers les plus structurants. Ce nouveau port en eau profonde, développé en partenariat avec DP World (Dubaï), ambitionne de devenir le hub logistique de l'Afrique de l'Ouest, réduisant la congestion du port de Dakar et captant les flux du commerce régional. Investissement total : 1 100 milliards FCFA."},
-    {t:"p",v:"Le Train Express Régional (TER) Dakar-AIBD est opérationnel depuis 2021 et a transporté plus de 8 millions de passagers à ce jour. Le projet d'extension Dakar-Thiès-Mbour est en phase d'étude. Par ailleurs, le réseau autoroutier sénégalais s'est densifié avec l'autoroute Ila Touba et l'axe Thiès-Touba, facilitant les échanges commerciaux inter-régionaux."},
-    {t:"stats",v:"📊 PSE — Chiffres d'investissement 2025-2026",items:["Budget d'investissement public : 1 800 Mds FCFA/an","Port de Ndayane : 1 100 Mds FCFA","TER phase 2 : 650 Mds FCFA (proj.)","Capacité solaire installée : 1,2 GW (objectif : 3 GW d'ici 2030)"]},
-    {t:"sub",v:"Impact économique et emploi"},
-    {t:"p",v:"La contribution des infrastructures à la croissance du PIB sénégalais est estimée à 1,2-1,8 points de pourcentage par an par la Banque Mondiale. Le secteur de la construction représente aujourd'hui 8,3% du PIB sénégalais et emploie directement plus de 200 000 personnes. La clé de l'efficacité du PSE résidera dans la qualité de la gouvernance des marchés publics et la capacité à mobiliser l'investissement privé en complément du financement public."}
-  ]},
-  {cat:"👨‍🎓 Sénégal — Capital humain",emoji:"👨‍🎓",coverType:"grad",coverClass:"cg-educ",title:"Education et emploi au Sénégal : les défis d'une économie en transition pétrolière",date:"4 Juin 2026",read:"5 min de lecture",blocks:[
-    {t:"intro",v:"La découverte du pétrole et du gaz au Sénégal a ouvert une fenêtre d'opportunité unique pour investir massivement dans le capital humain. Car la véritable richesse d'une nation, au-delà des ressources du sous-sol, c'est la qualité de ses ressources humaines — seul actif réellement inépuisable."},
-    {t:"sub",v:"L'état des lieux : chiffres et défis"},
-    {t:"p",v:"Le Sénégal affiche un taux de chômage des jeunes de 18-24 ans estimé à 25-30%, malgré une croissance économique supérieure à 6% par an. Ce paradoxe s'explique par une inadéquation profonde entre la formation offerte et les besoins réels du marché du travail. L'université sénégalaise produit chaque année plus de 30 000 diplômés, dont une large part en lettres, sciences sociales et droit — des secteurs à faible demande du marché privé."},
-    {t:"stats",v:"📊 Education & emploi au Sénégal — 2026",items:["Taux d'alphabétisation : 56% (pop. adulte)","Chômage jeunes 18-24 ans : ~27%","Taux de scolarisation secondaire : 44%","Part formation technique/professionnelle : <15% des élèves"]},
-    {t:"sub",v:"Les réformes en cours et opportunités"},
-    {t:"p",v:"Le gouvernement a lancé le Programme Compétences et Emploi pour les Jeunes (PCEJ), visant à former 150 000 jeunes aux métiers techniques d'ici 2028 (électricité, soudure, numérique, logistique pétrolière). Des centres de formation professionnelle dédiés au secteur pétrolier sont en construction à Saint-Louis et Ziguinchor pour répondre aux besoins spécifiques des opérateurs Woodside, BP et TotalEnergies."},
-    {t:"p",v:"La sénégalisation des emplois dans le secteur pétrolier est un enjeu majeur. Les contrats pétroliers prévoient des clauses de 'local content' imposant aux opérateurs de recruter et former des nationaux. Sur les 3 000 emplois directs attendus sur le champ de Sangomar à plein régime, l'objectif est d'atteindre 60% d'employés sénégalais d'ici 2028."}
-  ]},
-  {cat:"🌍 UEMOA & BCEAO",emoji:"🌍",coverType:"grad",coverClass:"cg-bceao",title:"BCEAO : taux à 3,5% — implications pour les 8 pays membres de l'Union",date:"5 Juin 2026",read:"5 min de lecture",blocks:[
-    {t:"intro",v:"La Banque Centrale des États de l'Afrique de l'Ouest (BCEAO) a reconduit son taux directeur à 3,5% lors de sa dernière réunion du Comité de Politique Monétaire. Une décision qui reflète le délicat équilibre entre lutte contre l'inflation, soutien à la croissance et stabilité financière dans une zone à 8 pays et 140 millions d'habitants."},
-    {t:"sub",v:"Mécanisme de transmission : comment le taux directeur impacte votre quotidien"},
-    {t:"p",v:"Le taux directeur de la BCEAO est le taux auquel la banque centrale prête aux banques commerciales. Quand ce taux est élevé, les banques empruntent plus cher et répercutent cette hausse sur leurs clients (crédits immobiliers, crédits à la consommation, crédits aux entreprises). Un taux à 3,5% signifie que les taux de crédit aux particuliers oscillent entre 8% et 14% dans la zone UEMOA — des niveaux qui freinent l'investissement privé."},
-    {t:"stats",v:"📊 Indicateurs monétaires UEMOA — Juin 2026",items:["Taux directeur BCEAO : 3,50%","Inflation zone UEMOA : 3,1% (en baisse)","Croissance PIB UEMOA 2026 estimée : +6,2%","Réserves de change : 7,2 mois d'importations"]},
-    {t:"sub",v:"Impacts différenciés selon les pays"},
-    {t:"p",v:"Le maintien du taux à 3,5% a des effets asymétriques dans la zone. La Côte d'Ivoire et le Sénégal, économies les plus diversifiées, absorbent mieux ce niveau de taux grâce à un secteur privé robuste et un accès aux marchés de capitaux (BRVM, Eurobonds). Le Mali, le Niger et le Burkina Faso — affectés par l'instabilité sécuritaire — souffrent davantage de conditions de crédit restrictives qui pénalisent la relance économique."}
-  ]},
-  {cat:"🤝 Afrique — ZLECAf",emoji:"🤝",coverType:"grad",coverClass:"cg-zlecaf",title:"ZLECAf : les échanges intra-africains progressent de 18% au T1 2026",date:"4 Juin 2026",read:"5 min de lecture",blocks:[
-    {t:"intro",v:"La Zone de Libre-Échange Continentale Africaine (ZLECAf) franchit un cap historique : les échanges commerciaux entre États membres ont progressé de 18% au premier trimestre 2026 par rapport à la même période 2025. Un signal fort de l'intégration économique africaine — encore partielle, mais bien réelle."},
-    {t:"sub",v:"Les secteurs et pays qui en profitent le plus"},
-    {t:"p",v:"Le Sénégal fait partie des grands bénéficiaires du démarrage de la ZLECAf. Les exportations sénégalaises de produits halieutiques, arachidiers et de services (technologies de l'information, finance) vers d'autres pays africains ont augmenté de 22% sur la période. La Côte d'Ivoire, puissance agro-alimentaire de la zone UEMOA, exporte désormais cacao transformé et huile de palme vers le Ghana, le Nigeria et l'Éthiopie avec des droits de douane réduits."},
-    {t:"stats",v:"📊 ZLECAf — Chiffres T1 2026",items:["Hausse échanges intra-africains : +18% YoY","Part du commerce intra-africain dans le total : 18% (vs 14% en 2022)","Pays les + actifs : Maroc, Côte d'Ivoire, Sénégal, Rwanda","Secteurs : agro-alimentaire, numérique, textile"]},
-    {t:"sub",v:"Les obstacles qui subsistent"},
-    {t:"p",v:"Malgré les progrès, la ZLECAf fait face à des obstacles structurels : infrastructures de transport insuffisantes (routes, rails) entre pays africains, procédures douanières encore complexes, barrières non-tarifaires (normes sanitaires, réglementations divergentes), et résistances des secteurs industriels nationaux à la concurrence africaine. Le plein potentiel de la ZLECAf — estimé à 450 milliards de dollars de commerce additionnel par an par la CEA — est encore loin d'être atteint."}
-  ]},
-  {cat:"🌐 Économie Mondiale",emoji:"🌐",coverType:"grad",coverClass:"cg-fmi",title:"FMI : croissance mondiale à 3,2% — l'Afrique subsaharienne à 4,2%, meilleure région du globe",date:"3 Juin 2026",read:"6 min de lecture",blocks:[
-    {t:"intro",v:"Dans ses dernières Perspectives de l'économie mondiale, le Fonds Monétaire International livre un tableau contrasté : une croissance mondiale à 3,2% en 2026, ralentie par les tensions commerciales USA-Chine et le durcissement des conditions financières mondiales. Mais l'Afrique subsaharienne tire son épingle du jeu avec +4,2% — meilleure performance de toutes les régions du monde."},
-    {t:"sub",v:"Pourquoi l'Afrique subsaharienne surperforme"},
-    {t:"p",v:"Trois facteurs expliquent cette surperformance relative. Premièrement, la montée en puissance des nouveaux producteurs d'hydrocarbures (Sénégal, Mozambique, Ouganda) qui gonflent les PIB nationaux et les revenus d'exportation. Deuxièmement, l'essor des services numériques et du mobile money qui crée une économie informelle en voie de formalisation. Troisièmement, la démographie — avec 60% de la population africaine âgée de moins de 25 ans, le continent dispose d'un dividende démographique potentiel considérable."},
-    {t:"stats",v:"📊 FMI — Prévisions de croissance 2026",items:["Afrique subsaharienne : +4,2%","Monde : +3,2%","Zone euro : +1,1%","États-Unis : +2,1%","Chine : +4,6%","Sénégal : +6,8% (pétro-boom)"]},
-    {t:"p",v:"Les principaux risques pour l'Afrique subsaharienne en 2026 restent la volatilité des prix des matières premières (pétrole, cacao, phosphates), les niveaux de dette publique élevés dans certains pays (Ghana, Zambie, Kenya), et l'instabilité sécuritaire dans le Sahel. La gestion prudente des ressources naturelles et l'investissement dans le capital humain seront déterminants pour transformer cette croissance conjoncturelle en développement structurel durable."}
-  ]}
+  {cat:"📈 BRVM — Performances",emoji:"📈",coverClass:"cg-brvm",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM",date:"7 Juin 2026",read:"8 min de lecture",blocks:[{t:"intro",v:"La BRVM confirme sa dynamique haussière avec un indice à 218,46 points."},{t:"p",v:"SONATEL (Sénégal Télécom) s'impose comme la locomotive de la BRVM, suivie par ORANGE CI et ECOBANK."}]},
+  {cat:"🇺🇸 S&P 500 — Marchés US",emoji:"🇺🇸",coverClass:"cg-sp500",title:"S&P 500 au-dessus des 5 400 pts",date:"6 Juin 2026",read:"6 min de lecture",blocks:[{t:"intro",v:"L'indice S&P 500 a franchi un nouveau record historique, porté par la tech."},{t:"p",v:"Nvidia, Microsoft et Apple représentent une large part de cette croissance."}]},
+  {cat:"🇫🇷 CAC 40 — Marchés Européens",emoji:"🇫🇷",coverClass:"cg-cac40",title:"CAC 40 à 8 200 pts",date:"6 Juin 2026",read:"5 min de lecture",blocks:[{t:"intro",v:"Le CAC 40 flirte avec les 8 200 points, tiré par les valeurs du luxe."},{t:"p",v:"LVMH, Hermès et BNP Paribas soutiennent l'indice parisien."}]}
 ];
 
 const METIERS_CLASSIC=[
-  {emoji:"📊",titre:"Analyste Financier (CFA)",desc:"Évalue la santé des entreprises et marchés pour guider les décisions d'investissement. Le titre CFA est la certification internationale de référence.",tags:["Modélisation financière","Valorisation DCF","Bloomberg · Excel"],secteur:"Banques · Asset Management · Conseil"},
-  {emoji:"🏦",titre:"Banquier d'Affaires (M&A)",desc:"Conseille les entreprises sur fusions-acquisitions, introductions en bourse et levées de fonds. Métier d'élite au cœur des grandes transactions.",tags:["Structuration deals","Due diligence","Négociation"],secteur:"Banques d'investissement · Boutiques M&A"},
-  {emoji:"💼",titre:"Gestionnaire de Portefeuille",desc:"Construit et arbitre des portefeuilles d'actifs (actions, obligations, immobilier) pour maximiser le rendement. Très demandé dans les fonds africains.",tags:["Allocation d'actifs","Macroéconomie","Python / R"],secteur:"Sociétés de gestion · Fonds souverains"},
-  {emoji:"⚠️",titre:"Risk Manager",desc:"Identifie, mesure et atténue les risques financiers d'une institution (crédit, marché, liquidité). Rôle central très recherché dans les banques.",tags:["VaR & Stress tests","Bâle III/IV","Statistiques"],secteur:"Banques · Assurances · Fintechs"},
-  {emoji:"🔍",titre:"Auditeur & Contrôleur",desc:"L'auditeur certifie la fiabilité des comptes (Big 4). Le contrôleur pilote la performance via budgets et tableaux de bord. Deux profils très recrutés.",tags:["IFRS / SYSCOHADA","Audit interne/externe","Business Intelligence"],secteur:"Cabinets Big 4 · Entreprises · Secteur public"},
-  {emoji:"🎯",titre:"Directeur Financier (CFO)",desc:"Architecte financier de l'entreprise — supervise comptabilité, trésorerie, financement et stratégie. Bras droit du PDG.",tags:["Stratégie financière","Levée de fonds","Leadership"],secteur:"Tous secteurs · Top management"}
+  {emoji:"📊",titre:"Analyste Financier (CFA)",desc:"Évalue la santé des entreprises et marchés pour guider les décisions d'investissement.",tags:["Modélisation","Valorisation","Bloomberg"],secteur:"Banques · Asset Management"},
+  {emoji:"🏦",titre:"Banquier d'Affaires (M&A)",desc:"Conseille les entreprises sur fusions-acquisitions et levées de fonds.",tags:["M&A","Due diligence","Négociation"],secteur:"Banques d'investissement"},
+  {emoji:"⚠️",titre:"Risk Manager",desc:"Identifie, mesure et atténue les risques financiers d'une institution.",tags:["VaR & Stress tests","Bâle III/IV"],secteur:"Banques · Fintechs"}
 ];
 
 const METIERS_PE=[
-  {emoji:"🔬",titre:"Analyste Private Equity",desc:"Premier échelon du PE : modélise les LBO, analyse les cibles, réalise les études de marché. Poste très sélectif.",tags:["Modélisation LBO","Due diligence","Évaluation"],secteur:"Fonds PE · Growth Equity · VC"},
-  {emoji:"📋",titre:"Associate Private Equity",desc:"Structure les deals, gère les relations avec les cibles et les banques. En Afrique : AfricInvest, Helios etc.",tags:["Structuration deals","Term sheets","Valorisation"],secteur:"AfricInvest · Helios · Development Finance"},
-  {emoji:"📈",titre:"VP / Principal PE",desc:"Supervise plusieurs transactions, manage l'équipe junior, participe aux comités d'investissement.",tags:["Comité d'investissement","Value creation","Origination"],secteur:"Grands fonds PE · Infrastructure"},
-  {emoji:"🏗️",titre:"Directeur de Participations",desc:"Supervise les entreprises du portefeuille, siège aux CA, pilote les plans de création de valeur et les exits.",tags:["Gouvernance","Value creation plan","Exit strategy"],secteur:"Fonds PE · Family offices"},
-  {emoji:"💰",titre:"Fund of Funds Manager",desc:"Investit dans d'autres fonds PE plutôt que directement dans des entreprises. Très présent à la BAD, IFC.",tags:["Sélection de fonds","Portfolio construction","BAD · IFC"],secteur:"Institutions de développement · Fonds de pension"},
-  {emoji:"🤝",titre:"Investor Relations (IR)",desc:"Pont entre le fonds et ses Limited Partners (LP). Gère les reportings, organise les roadshows.",tags:["Capital raising","LP reporting","Roadshows"],secteur:"Tous fonds PE · VC · Infrastructure"},
-  {emoji:"⚡",titre:"Venture Capitalist (VC)",desc:"Investit dans des startups à fort potentiel et les accompagne jusqu'à l'exit. Scène VC en explosion en Afrique.",tags:["Startup ecosystem","Cap table","Scalabilité"],secteur:"Partech Africa · Orange Ventures"},
-  {emoji:"🌱",titre:"Impact Investing Analyst",desc:"Investit dans des entreprises à impact social/environnemental mesurable (solaire, agri-tech, santé).",tags:["ESG · Impact measurement","SDGs · ODD","Blended finance"],secteur:"DFI · Fondations · Fonds ESG"}
+  {emoji:"🔬",titre:"Analyste Private Equity",desc:"Modélise les LBO, analyse les cibles, réalise les études de marché.",tags:["Modélisation LBO","Évaluation"],secteur:"Fonds PE · Growth Equity"},
+  {emoji:"📋",titre:"Associate Private Equity",desc:"Structure les deals, gère les relations avec les cibles et banques.",tags:["Structuration","Term sheets"],secteur:"AfricInvest · Helios"},
+  {emoji:"⚡",titre:"Venture Capitalist (VC)",desc:"Investit dans des startups à fort potentiel et les accompagne.",tags:["Startup ecosystem","Cap table"],secteur:"Partech Africa · Orange Ventures"},
+  {emoji:"🌱",titre:"Impact Investing",desc:"Investit dans des entreprises à impact social/environnemental.",tags:["ESG","Blended finance"],secteur:"DFI · Fonds ESG"}
 ];
 
 const PENSEURS=[
-  {emoji:"🏛️",nom:"Adam Smith",annees:"1723 — 1790",role:"Père du capitalisme libéral",oeuvre:"La Richesse des Nations (1776)",desc:"Fondateur de l'économie politique moderne. Sa théorie de la « main invisible » du marché a posé les bases du capitalisme libéral.",impact:"Libéralisme · Main invisible · Division du travail"},
-  {emoji:"💡",nom:"John M. Keynes",annees:"1883 — 1946",role:"Père de la macroéconomie moderne",oeuvre:"Théorie générale (1936)",desc:"Sa révolution keynésienne démontre qu'en période de crise, l'État doit intervenir massivement pour relancer la demande.",impact:"Stimulus fiscal · Rôle de l'État · Plein emploi"},
-  {emoji:"📊",nom:"Milton Friedman",annees:"1912 — 2006",role:"Champion du monétarisme",oeuvre:"Capitalisme et Liberté (1962)",desc:"Prix Nobel 1976. A défendu les marchés libres et des règles monétaires strictes — une influence directe sur la BCEAO et la Fed.",impact:"Monétarisme · Marchés libres · Règle de Taylor"},
-  {emoji:"⚒️",nom:"Karl Marx",annees:"1818 — 1883",role:"Fondateur du socialisme scientifique",oeuvre:"Le Capital (1867)",desc:"A analysé les contradictions structurelles du capitalisme. Sa théorie a influencé les politiques économiques post-indépendance.",impact:"Socialisme · Lutte des classes · Critique du capital"},
-  {emoji:"🔄",nom:"Joseph Schumpeter",annees:"1883 — 1950",role:"Théoricien de la destruction créatrice",oeuvre:"Capitalisme, Socialisme (1942)",desc:"Le concept de « destruction créatrice » : l'innovation technologique détruit les anciennes industries pour en créer de nouvelles.",impact:"Innovation · Entrepreneuriat · Disruption tech"},
-  {emoji:"📈",nom:"Thomas Piketty",annees:"Né en 1971",role:"Économiste des inégalités",oeuvre:"Le Capital au XXIe siècle (2013)",desc:"Sa formule r > g démontre la concentration structurelle des richesses. Ses travaux éclairent les enjeux de redistribution.",impact:"Inégalités · Fiscalité progressive · r > g"},
-  {emoji:"🌍",nom:"Amartya Sen",annees:"Né en 1933",role:"Prix Nobel du développement",oeuvre:"Développement comme Liberté",desc:"Prix Nobel 1998. A révolutionné la conception du développement en plaçant la liberté humaine et les capabilités au centre.",impact:"Développement humain · IDH · Capabilités"},
-  {emoji:"📚",nom:"Paul Samuelson",annees:"1915 — 2009",role:"Père de l'économie néoclassique",oeuvre:"Économie (1948)",desc:"A synthétisé la macroéconomie keynésienne et la microéconomie néoclassique. Son manuel a formé des générations d'économistes.",impact:"Économie mathématique · Synthèse néoclassique"}
+  {emoji:"🏛️",nom:"Adam Smith",annees:"1723 — 1790",role:"Père du capitalisme libéral",oeuvre:"La Richesse des Nations",desc:"Sa théorie de la main invisible a posé les bases du marché libre.",impact:"Libéralisme · Main invisible"},
+  {emoji:"💡",nom:"John M. Keynes",annees:"1883 — 1946",role:"Père de la macroéconomie",oeuvre:"Théorie générale",desc:"Démontre qu'en période de crise, l'État doit intervenir pour relancer la demande.",impact:"Stimulus fiscal · Rôle de l'État"},
+  {emoji:"📊",nom:"Milton Friedman",annees:"1912 — 2006",role:"Champion du monétarisme",oeuvre:"Capitalisme et Liberté",desc:"A défendu les règles monétaires strictes (influence sur la BCEAO).",impact:"Monétarisme · Marchés libres"},
+  {emoji:"🌍",nom:"Amartya Sen",annees:"Né en 1933",role:"Prix Nobel",oeuvre:"Développement comme Liberté",desc:"A révolutionné la conception du développement via les capabilités.",impact:"Développement humain · IDH"}
 ];
 
+// --- 1. INITIALISATION MARCHÉS (ALPHA VANTAGE + MOCK) ---
+async function initMarkets() {
+  const container = document.getElementById('markets-bar');
+  let finalMarkets = [];
+  const symbols = [
+    { id: 'brvm', name: 'BRVM Comp', isMock: true, val: '218.46', varStr: '+0.45%', up: true, data: [210,212,211,215,214,217,218.46] },
+    { id: 'spy', name: 'S&P 500', symbol: 'SPY', isMock: false },
+    { id: 'vgk', name: 'Europe', symbol: 'VGK', isMock: false },
+    { id: 'gold', name: 'Or (GLD)', symbol: 'GLD', isMock: false },
+    { id: 'oil', name: 'Pétrole (USO)', symbol: 'USO', isMock: false }
+  ];
+
+  for (let sym of symbols) {
+    if (sym.isMock) { finalMarkets.push(sym); continue; }
+    try {
+      const res = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${sym.symbol}&apikey=${ALPHA_VANTAGE_KEY}`);
+      const data = await res.json();
+      const timeSeries = data['Time Series (Daily)'];
+      if (!timeSeries) throw new Error("Limite API atteinte");
+      const dates = Object.keys(timeSeries).slice(0, 7).reverse();
+      const prices = dates.map(d => parseFloat(timeSeries[d]['4. close']));
+      const currentPrice = prices[prices.length - 1];
+      const previousPrice = prices[prices.length - 2];
+      const percentChange = (((currentPrice - previousPrice) / previousPrice) * 100).toFixed(2);
+      finalMarkets.push({
+        id: sym.id, name: sym.name, val: currentPrice.toFixed(2), varStr: (percentChange>=0?'+':'')+percentChange+'%',
+        up: percentChange>=0, data: prices
+      });
+    } catch (e) {
+      // Données de secours si limite API des 25 requêtes dépassée
+      const mockData = sym.id === 'spy' ? [530,535,532,540,542,541,542] : (sym.id === 'vgk' ? [65,66,65.5,67,68,67.5,68.4] : [180,182,181,185,188,190,192]);
+      finalMarkets.push({ id: sym.id, name: sym.name, val: mockData[6].toFixed(2), varStr: '+0.5%', up: true, data: mockData });
+    }
+  }
+
+  container.innerHTML = finalMarkets.map(m => `
+    <div class="mkt-item">
+      <div class="mkt-name">${m.name}</div>
+      <div class="mkt-val">${m.val}</div>
+      <div class="mkt-chg ${m.up?'up':'dn'}">${m.up?'▲':'▼'} ${m.varStr}</div>
+      <div style="height:35px; width:100%; margin-top:8px;"><canvas id="chart-${m.id}"></canvas></div>
+    </div>
+  `).join('');
+
+  finalMarkets.forEach(m => {
+    const ctx = document.getElementById(`chart-${m.id}`).getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: { labels: ['1','2','3','4','5','6','7'], datasets: [{ data: m.data, borderColor: m.up?'#15803D':'#DC2626', borderWidth: 2, tension: 0.3, pointRadius: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins:{legend:{display:false}, tooltip:{enabled:false}}, scales:{x:{display:false}, y:{display:false}} }
+    });
+  });
+}
+
+// --- 2. INITIALISATION ACTUALITÉS (NEWS API) ---
+async function initNews() {
+  const url = `https://newsapi.org/v2/everything?q=finance+économie+afrique+bceao&language=fr&sortBy=publishedAt&pageSize=3&apiKey=${NEWS_API_KEY}`;
+  const grads = ['cg-1', 'cg-2', 'cg-3', 'cg-4'];
+  const emojis = ['📰', '📊', '🌍', '💡'];
+  
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.status === "ok" && data.articles && data.articles.length > 0) {
+      DATA.economie = data.articles.map((a, index) => ({
+        emoji: emojis[index % emojis.length],
+        cat: a.source.name.substring(0, 15).toUpperCase(),
+        title: a.title,
+        excerpt: a.description ? a.description.substring(0, 120) + '...' : "Actualité économique africaine.",
+        date: new Date(a.publishedAt).toLocaleDateString('fr-FR'),
+        read: "En direct",
+        url: a.url, // Lien externe
+        coverType: "grad",
+        coverClass: grads[Math.floor(Math.random() * grads.length)]
+      }));
+    } else { throw new Error("API bloquée"); }
+  } catch (error) {
+    // Secours si NewsAPI bloque la requête CORS
+    DATA.economie = [
+      {emoji:"🇸🇳",cat:"ÉCONOMIE",title:"Sangomar : les revenus pétroliers transforment le budget",excerpt:"Le champ offshore de Sangomar génère ses premières royalties.",date:"Aujourd'hui",read:"7 min",det:3, coverType:"grad", coverClass:"cg-4"},
+      {emoji:"🌍",cat:"UEMOA",title:"BCEAO : taux à 3,5% — implications pour les 8 pays",excerpt:"La Banque Centrale reconduit sa politique monétaire.",date:"Aujourd'hui",read:"5 min",det:6, coverType:"grad", coverClass:"cg-2"},
+      {emoji:"🤝",cat:"AFRIQUE",title:"ZLECAf : les échanges intra-africains progressent",excerpt:"Le commerce entre États membres en hausse historique.",date:"Hier",read:"5 min",det:7, coverType:"grad", coverClass:"cg-3"}
+    ];
+  }
+  renderArts('economie');
+}
+
+// --- 3. CARTE D3.JS AFRIQUE ---
+const countryData = {
+  "Senegal": { pib: "$1,600", croiss: "7.1%", inf: "3.5%", dev: "Franc CFA (XOF)", color: "#1D4E8F" },
+  "Ivory Coast": { pib: "$2,500", croiss: "6.8%", inf: "4.0%", dev: "Franc CFA (XOF)", color: "#2F6DB5" },
+  "Nigeria": { pib: "$2,000", croiss: "3.2%", inf: "28.9%", dev: "Naira (NGN)", color: "#C9A84C" },
+  "South Africa": { pib: "$6,000", croiss: "1.2%", inf: "5.1%", dev: "Rand (ZAR)", color: "#8B6914" },
+  "Morocco": { pib: "$3,500", croiss: "3.1%", inf: "4.5%", dev: "Dirham (MAD)", color: "#4A87CE" },
+  "Kenya": { pib: "$2,200", croiss: "5.0%", inf: "6.5%", dev: "Shilling (KES)", color: "#E5C46B" }
+};
+
+async function initMap() {
+  const width = document.getElementById('africa-map').clientWidth;
+  const height = 500;
+  const svg = d3.select("#africa-map").append("svg").attr("width", width).attr("height", height);
+  const projection = d3.geoMercator().scale(350).translate([width / 2, height / 2 + 50]);
+  const path = d3.geoPath().projection(projection);
+
+  try {
+    const response = await fetch("https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/africa.geojson");
+    const data = await response.json();
+    svg.selectAll("path").data(data.features).enter().append("path").attr("class", "country-path").attr("d", path)
+      .attr("fill", d => countryData[d.properties.name] ? countryData[d.properties.name].color : "#DEDCD8")
+      .on("mouseover", function(event, d) {
+        const name = d.properties.name;
+        const cdata = countryData[name] || { pib:"N/A", croiss:"-", inf:"-", dev:"-" };
+        document.getElementById('mp-title').innerText = name;
+        document.getElementById('pd-pib').innerText = cdata.pib;
+        document.getElementById('pd-croissance').innerText = cdata.croiss;
+        document.getElementById('pd-inflation').innerText = cdata.inf;
+        document.getElementById('pd-devise').innerText = cdata.dev;
+        document.getElementById('panel-data').style.display = 'block';
+      });
+  } catch (e) {
+    document.getElementById('africa-map').innerHTML = "<p style='padding:20px'>Erreur chargement carte.</p>";
+  }
+}
+
+// --- 4. GLOSSAIRE ---
+const GLOSSARY = [
+  { term: "BRVM", def: "Bourse Régionale des Valeurs Mobilières. Marché financier de l'UEMOA.", theme: "Bourse" },
+  { term: "Eurobond", def: "Obligation émise en devise étrangère (USD/EUR) par un État.", theme: "Dette" },
+  { term: "BCEAO", def: "Banque Centrale des États de l'Afrique de l'Ouest.", theme: "Institution" },
+  { term: "Private Equity", def: "Capital-investissement. Prise de participation dans des entreprises non cotées.", theme: "Investissement" },
+  { term: "ZLECAf", def: "Zone de Libre-Échange Continentale Africaine.", theme: "Macroéconomie" }
+];
+
+function initGlossary() {
+  const render = (filter) => {
+    const filtered = GLOSSARY.filter(t => t.term.toLowerCase().includes(filter.toLowerCase()) || t.theme.toLowerCase().includes(filter.toLowerCase()));
+    document.getElementById('gloss-grid').innerHTML = filtered.map(t => `
+      <div class="gloss-card"><div class="gloss-term">${t.term}</div><div class="gloss-theme">${t.theme}</div><div class="gloss-def">${t.def}</div></div>
+    `).join('');
+  };
+  document.getElementById('gloss-search').addEventListener('input', e => render(e.target.value));
+  render("");
+}
+
+// --- FONCTIONS DE BASE ---
 function renderBlock(b){
-  if(b.t==='intro')  return`<p class="art-body-intro">${b.v}</p>`;
-  if(b.t==='sub')    return`<h2 class="art-body-sub">${b.v}</h2>`;
-  if(b.t==='p')      return`<p class="art-body-p">${b.v}</p>`;
-  if(b.t==='stats')  return`<div class="art-highlight"><div class="art-highlight-title">${b.v}</div><ul>${b.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+  if(b.t==='intro') return`<p class="art-body-intro">${b.v}</p>`;
+  if(b.t==='p') return`<p class="art-body-p">${b.v}</p>`;
+  if(b.t==='stats') return`<div class="art-highlight"><div class="art-highlight-title">${b.v}</div><ul>${b.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
   return'';
 }
 
 function openModal(idx){
   const art=DETAILS[idx]; if(!art)return;
-  
-  // Gestion de la couverture du modal (Image vs Dégradé)
-  const coverHtml = `<div class="cover-grad ${art.coverClass}"><span class="cg-icon" style="font-size:120px">${art.emoji}</span></div>`;
-  
   document.getElementById('m-cat').textContent=art.cat;
   document.getElementById('m-title').textContent=art.title;
   document.getElementById('m-date').textContent=art.date;
   document.getElementById('m-read').textContent=art.read;
-  
-  document.getElementById('m-img').innerHTML=`<div class="modal-hero">${coverHtml}</div>`;
+  document.getElementById('m-img').innerHTML=`<div class="modal-hero"><div class="cover-grad ${art.coverClass}"><span class="cg-icon" style="font-size:120px">${art.emoji}</span></div></div>`;
   document.getElementById('m-content').innerHTML=art.blocks.map(renderBlock).join('');
-  const m=document.getElementById('art-modal');
-  m.classList.add('open'); m.scrollTop=0;
+  document.getElementById('art-modal').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function closeModal(){
-  document.getElementById('art-modal').classList.remove('open');
-  document.body.style.overflow='';
-}
+function closeModal(){document.getElementById('art-modal').classList.remove('open');document.body.style.overflow='';}
 
 function renderArts(sec){
   const g=document.getElementById('grid-'+sec); if(!g)return;
-  g.innerHTML=DATA[sec].map((a,i)=>{
-    const hasDetail=(typeof a.det==='number');
-    
-    // Rendu dynamique de la vignette (Image vs Dégradé)
-    const coverHtml = `<div class="cover-grad ${a.coverClass}"><span class="cg-icon">${a.emoji}</span></div>`;
-
-    return`<article class="art"${hasDetail?` onclick="openModal(${a.det})"`:''}>
-      <div class="art-img-wrap">${coverHtml}</div>
+  g.innerHTML=DATA[sec].map(a=>{
+    const action = typeof a.det==='number' ? `onclick="openModal(${a.det})"` : (a.url ? `onclick="window.open('${a.url}', '_blank')"` : '');
+    return`<article class="art" ${action}>
+      <div class="art-img-wrap"><div class="cover-grad ${a.coverClass}"><span class="cg-icon">${a.emoji}</span></div></div>
       <div class="art-body">
-        <div class="art-cat">${a.emoji} ${a.cat}</div>
-        <h3 class="art-ttl">${a.title}</h3>
-        <p class="art-exc">${a.excerpt}</p>
-        <div class="art-foot">
-          <span class="art-meta">${a.date} · ${a.read}</span>
-          <div class="art-arr"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        </div>
-        ${hasDetail?`<div class="art-detail-lbl">Lire l'article complet →</div>`:''}
+        <div class="art-cat">${a.emoji} ${a.cat}</div><h3 class="art-ttl">${a.title}</h3><p class="art-exc">${a.excerpt}</p>
+        <div class="art-foot"><span class="art-meta">${a.date} · ${a.read}</span><div class="art-arr"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5"/></svg></div></div>
       </div>
     </article>`;
   }).join('');
 }
 
-function renderGrid(id,items){
-  const g=document.getElementById(id); if(!g)return;
-  g.innerHTML=items.map(m=>`
-    <div class="career-card">
-      <div class="career-icon">${m.emoji}</div>
-      <h3 class="career-title">${m.titre}</h3>
-      <p class="career-desc">${m.desc}</p>
-      <div class="career-tags">${m.tags.map(t=>`<span class="tag${m.pe?' tag-pe':''}">${t}</span>`).join('')}</div>
-      <div class="career-sector"><span>Secteurs : </span>${m.secteur}</div>
-    </div>`).join('');
-}
-
-function renderPenseurs(){
-  const g=document.getElementById('grid-penseurs'); if(!g)return;
-  g.innerHTML=PENSEURS.map(p=>`
-    <div class="thinker-card">
-      <div class="thinker-emoji">${p.emoji}</div>
-      <div class="thinker-name">${p.nom}</div>
-      <div class="thinker-years">${p.annees}</div>
-      <div class="thinker-role">${p.role}</div>
-      <div class="thinker-quote">${p.oeuvre}</div>
-      <p class="thinker-desc">${p.desc}</p>
-      <div class="thinker-impact"><span>Concepts clés : </span>${p.impact}</div>
-    </div>`).join('');
-}
-
-function toast(msg,type='ok'){
-  const t=document.createElement('div'); t.className='toast toast-'+type; t.textContent=msg;
-  document.body.appendChild(t); setTimeout(()=>t.classList.add('show'),10);
-  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),350);},4500);
-}
-
+// --- BOOTSTRAP ---
 document.addEventListener('DOMContentLoaded',()=>{
-  ['marches','economie','articles'].forEach(s=>{
-    renderArts(s);
-  });
-  renderGrid('grid-classic',METIERS_CLASSIC);
-  renderGrid('grid-pe',METIERS_PE.map(m=>({...m,pe:true})));
-  renderPenseurs();
-  const d=new Date();
-  const J=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-  const M=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  const el=document.getElementById('live-date'); if(el)el.textContent=J[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear();
-  window.addEventListener('scroll',()=>{
-    const b=document.getElementById('bar');
-    if(b)b.style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';
-  });
-  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.06});
+  renderArts('marches'); renderArts('articles');
+  renderGrid('grid-classic',METIERS_CLASSIC); renderGrid('grid-pe',METIERS_PE); renderPenseurs();
+  initMarkets(); initNews(); initMap(); initGlossary();
+  
+  const d=new Date(), J=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'], M=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
+  document.getElementById('live-date').textContent=`${J[d.getDay()]} ${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
+  
+  window.addEventListener('scroll',()=> document.getElementById('bar').style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%');
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:0.06});
   document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
-  const inp=document.getElementById('email-in');
-  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')handleSub();});
 });
 
+function renderGrid(id,items){ document.getElementById(id).innerHTML=items.map(m=>`<div class="career-card"><div class="career-icon">${m.emoji}</div><h3 class="career-title">${m.titre}</h3><p class="career-desc">${m.desc}</p><div class="career-tags">${m.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join(''); }
+function renderPenseurs(){ document.getElementById('grid-penseurs').innerHTML=PENSEURS.map(p=>`<div class="thinker-card"><div class="thinker-emoji">${p.emoji}</div><div class="thinker-name">${p.nom}</div><div class="thinker-years">${p.annees}</div><div class="thinker-role">${p.role}</div><p class="thinker-desc">${p.desc}</p><div class="thinker-impact"><span>Clés: </span>${p.impact}</div></div>`).join(''); }
 function openMM(){document.getElementById('mmenu').classList.add('open');document.body.style.overflow='hidden';}
 function closeMM(){document.getElementById('mmenu').classList.remove('open');document.body.style.overflow='';}
 function scrollCTA(){document.getElementById('subscribe').scrollIntoView({behavior:'smooth'});}
-function handleSub(){
-  const inp=document.getElementById('email-in'),btn=document.getElementById('sub-btn');
-  if(inp.value&&inp.value.includes('@')&&inp.value.includes('.')){
-    btn.textContent='✓ Bienvenue !';btn.style.background='var(--green)';inp.value='';
-    setTimeout(()=>{btn.textContent="S'abonner →";btn.style.background='';},3200);
-  }else{
-    inp.style.borderColor='var(--red)';inp.placeholder='Email invalide…';
-    setTimeout(()=>{inp.style.borderColor='';inp.placeholder='Votre adresse email…';},2200);
-  }
-}
 </script>
 </body>
 </html>
