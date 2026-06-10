@@ -6,19 +6,19 @@
 <title>The Finafrica News — Finance Africaine &amp; Mondiale</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F9F8F7;--text:#1A1917;--blue:#1D4E8F;--gold:#C9A84C;--border:#E5E3E0;}
+:root{--bg:#F9F8F7;--text:#1A1917;--blue:#1D4E8F;--border:#E5E3E0;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;margin:0;line-height:1.6}
-/* Couvertures simplifiées */
-.art-img-wrap{height:160px;display:flex;align-items:center;justify-content:center;background:#F0EFEF;font-size:40px;}
-.bg-1{background:linear-gradient(135deg, #EBE8E4 0%, #DEDCD8 100%)}
-.bg-2{background:linear-gradient(135deg, #F0EFEF 0%, #E6E4E2 100%)}
-/* Structure */
+
+/* Structure de la grille */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;padding:40px 5%}
 .art{background:#fff;border:1px solid var(--border);padding:20px;transition:transform .2s}
 .art:hover{border-color:var(--blue)}
+
+/* Style épuré : texte uniquement */
 .art-cat{font-size:11px;letter-spacing:2px;color:var(--blue);font-weight:600;margin-bottom:10px}
 .art-ttl{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:10px}
-.art-exc{font-size:13px;color:#666;margin-bottom:20px}
+.art-exc{font-size:13px;color:#666;margin-bottom:0}
+
 header{padding:40px 5%;border-bottom:1px solid var(--border)}
 .logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--text);text-decoration:none}
 </style>
@@ -34,23 +34,20 @@ header{padding:40px 5%;border-bottom:1px solid var(--border)}
 
 <script>
 const articles = [
-  {cat:"MARCHÉS", title:"Analyse de la BRVM au S1 2026", exc:"Synthèse des performances des grandes capitalisations.", color:"bg-1", icon:"📊"},
-  {cat:"ÉCONOMIE", title:"Le Sénégal et le pétrole", exc:"Impact des premières royalties sur le budget 2026.", color:"bg-2", icon:"⛽"},
-  {cat:"STRATÉGIE", title:"L'essor du Private Equity", exc:"Pourquoi les fonds affluent vers l'Afrique.", color:"bg-1", icon:"💎"},
-  {cat:"BANQUE", title:"BCEAO et taux directeurs", exc:"Comprendre la politique monétaire actuelle.", color:"bg-2", icon:"🏦"},
-  {cat:"MONDE", title:"Croissance mondiale 2026", exc:"Les enjeux de l'économie globale.", color:"bg-1", icon:"🌍"},
-  {cat:"CARRIÈRE", title:"Métiers du Master Finance", exc:"Guide des débouchés après un diplôme.", color:"bg-2", icon:"🎓"}
+  {cat:"MARCHÉS", title:"Analyse de la BRVM au S1 2026", exc:"Synthèse des performances des grandes capitalisations."},
+  {cat:"ÉCONOMIE", title:"Le Sénégal et le pétrole", exc:"Impact des premières royalties sur le budget 2026."},
+  {cat:"STRATÉGIE", title:"L'essor du Private Equity", exc:"Pourquoi les fonds affluent vers l'Afrique."},
+  {cat:"BANQUE", title:"BCEAO et taux directeurs", exc:"Comprendre la politique monétaire actuelle."},
+  {cat:"MONDE", title:"Croissance mondiale 2026", exc:"Les enjeux de l'économie globale."},
+  {cat:"CARRIÈRE", title:"Métiers du Master Finance", exc:"Guide des débouchés après un diplôme."}
 ];
 
 const grid = document.getElementById('main-grid');
 grid.innerHTML = articles.map(a => `
   <article class="art">
-    <div class="art-img-wrap ${a.color}">${a.icon}</div>
-    <div style="padding-top:20px">
-      <div class="art-cat">${a.cat}</div>
-      <h3 class="art-ttl">${a.title}</h3>
-      <p class="art-exc">${a.exc}</p>
-    </div>
+    <div class="art-cat">${a.cat}</div>
+    <h3 class="art-ttl">${a.title}</h3>
+    <p class="art-exc">${a.exc}</p>
   </article>
 `).join('');
 </script>
