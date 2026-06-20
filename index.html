@@ -1,718 +1,766 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Finafrica News — Finance Africaine &amp; Mondiale</title>
-<meta name="description" content="The Finafrica News : newsletter de référence en finance africaine et mondiale.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,600&family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#ECEAE6;--bg2:#F4F3F0;--card:#FFFFFF;--card-h:#F8F7F5;
-  --border:#DDDAD5;--border-h:#C0BDB7;
-  --text:#1A1917;--text-m:#5A5753;--text-d:#9A9894;
-  --gold:#C9A84C;--gold-l:#E5C46B;--gold-ll:#F2D98A;--gold-d:#8B6914;--gold-dd:#5A430D;
-  --blue:#1D4E8F;--blue-l:#2F6DB5;--blue-ll:#4A87CE;--blue-d:#0F3060;
-  --green:#15803D;--red:#DC2626;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);background-image:radial-gradient(ellipse 60% 40% at 20% 50%,rgba(29,78,143,.04) 0%,transparent 55%),radial-gradient(ellipse 50% 30% at 80% 20%,rgba(201,168,76,.04) 0%,transparent 50%);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:2px}
-#bar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;transition:width .08s linear;background:linear-gradient(90deg,var(--blue-d),var(--blue),var(--gold),var(--blue-l))}
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card);border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.12);padding:13px 26px;font-size:13px;color:var(--text);z-index:9000;opacity:0;transition:all .35s;white-space:nowrap;max-width:90vw}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast-ok{border-left:3px solid var(--gold)}.toast-err{border-left:3px solid var(--red)}
-#mmenu{display:none;position:fixed;inset:0;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);z-index:500;flex-direction:column;align-items:center;justify-content:center;gap:32px}
-#mmenu.open{display:flex}
-#mmenu a{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--text);text-decoration:none;transition:color .3s}
-#mmenu a:hover{color:var(--blue)}
-#mclose{position:absolute;top:24px;right:28px;background:none;border:none;font-size:26px;cursor:pointer;color:var(--text-d)}
-#art-modal{display:none;position:fixed;inset:0;z-index:700;background:var(--bg);overflow-y:auto}
-#art-modal.open{display:block;animation:modalIn .35s ease}
-@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.modal-nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;z-index:10;box-shadow:0 1px 8px rgba(0,0,0,.06)}
-.modal-back{background:none;border:1px solid var(--border);color:var(--text-m);padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.modal-back:hover{border-color:var(--blue);color:var(--blue)}
-.modal-pub{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;background:linear-gradient(90deg,var(--blue),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Finafrica News</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #d97706;
+            --text-dark: #1f2937;
+            --text-light: #4b5563;
+            --bg-light: #f8f9fa;
+            --border: #e5e7eb;
+        }
 
-/* --- STYLES DES COUVERTURES DEGRADES --- */
-.modal-hero{width:100%;height:320px;overflow:hidden;position:relative}
-.modal-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,var(--bg))}
-.cover-grad {width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform .5s ease;}
-.art:hover .cover-grad { transform: scale(1.05); }
-.cg-1, .cg-brvm, .cg-pse, .cg-interet { background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue-ll) 100%); }
-.cg-2, .cg-sp500, .cg-bceao, .cg-crise { background: linear-gradient(135deg, #1A1917 0%, #4A4844 100%); }
-.cg-3, .cg-cac40, .cg-zlecaf, .cg-or { background: linear-gradient(135deg, var(--gold-d) 0%, var(--gold-l) 100%); }
-.cg-4, .cg-sangomar, .cg-educ, .cg-petrole, .cg-fmi { background: linear-gradient(135deg, #2c4228 0%, #4a6b43 100%); }
-.cg-icon { font-size: 54px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-.modal-body{max-width:820px;margin:0 auto;padding:48px 5% 80px}
-.modal-cat-lbl{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:14px}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,50px);font-weight:700;line-height:1.1;background:linear-gradient(135deg,var(--blue-d),var(--blue),var(--gold-d));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px}
-.modal-meta-row{display:flex;align-items:center;gap:16px;padding-bottom:28px;border-bottom:1px solid var(--border);margin-bottom:36px;flex-wrap:wrap}
-.modal-meta-row span{font-size:11px;font-weight:300;color:var(--text-d)}
-.modal-meta-row .sep{color:var(--border)}
-.art-body-intro{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;font-style:italic;line-height:1.65;color:var(--text-m);margin-bottom:32px;padding-left:24px;border-left:3px solid var(--gold)}
-.art-body-sub{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--blue);margin:36px 0 14px}
-.art-body-p{font-size:14.5px;font-weight:300;color:var(--text-m);line-height:1.9;margin-bottom:20px}
-.art-highlight{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--gold);padding:24px 28px;margin:28px 0}
-.art-highlight-title{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--blue);margin-bottom:14px}
-.art-highlight ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.art-highlight ul li{font-size:13px;font-weight:400;color:var(--text-m);padding-left:16px;position:relative}
-.art-highlight ul li::before{content:'◆';position:absolute;left:0;color:var(--gold-d);font-size:8px;top:4px}
-header{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);box-shadow:0 1px 12px rgba(0,0,0,.06)}
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:70px;max-width:1440px;margin:0 auto}
-.logo{display:flex;align-items:center;gap:11px;text-decoration:none}
-.logo-txt{display:flex;flex-direction:column;line-height:1.15}
-.logo-the{font-family:'DM Sans',sans-serif;font-size:8px;font-weight:600;letter-spacing:4px;color:var(--blue);text-transform:uppercase}
-.logo-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;background:linear-gradient(120deg,var(--blue-d) 0%,var(--blue) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.logo-sub{font-family:'DM Sans',sans-serif;font-size:7.5px;font-weight:400;letter-spacing:3.5px;color:var(--text-d);text-transform:uppercase;margin-top:1px}
-.nav-links{display:flex;align-items:center;gap:30px;list-style:none}
-.nav-links a{text-decoration:none;color:var(--text-m);font-size:10.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;transition:color .25s;position:relative;padding-bottom:2px}
-.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--blue);transition:width .3s}
-.nav-links a:hover{color:var(--blue)}
-.nav-links a:hover::after{width:100%}
-.btn-sub{background:var(--blue);border:none;color:#fff;padding:9px 22px;font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .3s}
-.btn-sub:hover{background:var(--blue-l)}
-.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
-.ham span{display:block;width:22px;height:2px;background:var(--text);border-radius:1px}
-.ticker{background:var(--blue);color:#fff;padding:8px 0;overflow:hidden}
-.ticker-inner{display:flex;align-items:center}
-.ticker-lbl{background:var(--gold);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2.5px;padding:3px 16px;flex-shrink:0;margin-right:24px;white-space:nowrap}
-.ticker-scroll{overflow:hidden;flex:1}
-.ticker-track{display:flex;gap:60px;white-space:nowrap;animation:scroll 40s linear infinite}
-.ticker-item{font-size:11.5px;font-weight:400;color:rgba(255,255,255,.92)}
-.ticker-item em{opacity:.4;margin:0 12px;font-style:normal}
-.t-up{color:#86EFAC;font-weight:600}.t-dn{color:#FCA5A5;font-weight:600}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.hero{padding:72px 5% 56px;max-width:1440px;margin:0 auto}
-.hero-top{display:flex;align-items:center;gap:16px;margin-bottom:48px}
-.badge-ed{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);border:1px solid var(--blue-ll);padding:4px 14px}
-.badge-live{font-size:10.5px;color:var(--text-m);display:flex;align-items:center;gap:6px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:start}
-.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5.5vw,78px);font-weight:700;line-height:1.03;background:linear-gradient(155deg,var(--blue-d) 0%,var(--blue) 45%,var(--blue-l) 75%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:26px}
-.hero-desc{font-size:14.5px;font-weight:300;line-height:1.85;color:var(--text-m);margin-bottom:40px;max-width:500px}
-.hero-desc strong{color:var(--blue);font-weight:600}
-.hero-stats{display:flex;gap:36px}
-.stat{display:flex;flex-direction:column;gap:4px}
-.stat-n{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);line-height:1}
-.stat-l{font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-d)}
-.feat-card{background:var(--card);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .3s;position:relative}
-.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-d),var(--blue),var(--gold),var(--blue));z-index:1}
-.feat-card:hover{border-color:var(--blue-ll);transform:translateY(-3px);box-shadow:0 8px 40px rgba(29,78,143,.1)}
-.feat-img{width:100%;height:200px;overflow:hidden;background:var(--border)}
-.feat-body{padding:28px}
-.feat-tag{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.feat-tag::before{content:'';display:block;width:22px;height:2px;background:var(--blue)}
-.feat-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;line-height:1.28;color:var(--text);margin-bottom:14px}
-.feat-excerpt{font-size:13px;font-weight:300;color:var(--text-m);line-height:1.85;margin-bottom:22px}
-.feat-footer{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border)}
-.feat-meta{font-size:10.5px;font-weight:300;color:var(--text-d)}
-.read-more{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--blue);text-decoration:none;transition:gap .3s}
-.read-more:hover{gap:14px}
-.rm-arr{transition:transform .3s}
-.read-more:hover .rm-arr{transform:translateX(4px)}
+        body {
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #fff;
+        }
 
-/* Mini-Dashboard Marchés Styles */
-.mkt-bar{padding:40px 5% 0;max-width:1440px;margin:0 auto}
-.mkt-inner{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
-.mkt-item{background:var(--card);padding:18px 22px;transition:background .3s; display:flex; flex-direction:column;}
-.mkt-item:hover{background:var(--bg2)}
-.mkt-name{font-size:9.5px;font-weight:600;letter-spacing:2px;color:var(--text-d);text-transform:uppercase;margin-bottom:6px}
-.mkt-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px}
-.mkt-chg{font-size:11px;font-weight:500;margin-top:4px}
-.up{color:var(--green)}.dn{color:var(--red)}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-/* Section Headers */
-.sec-hdr{display:flex;align-items:center;gap:24px;padding:68px 5% 36px;max-width:1440px;margin:0 auto}
-.sec-hdr::before{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border))}
-.sec-hdr::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
-.sec-hdr-c{text-align:center;white-space:nowrap}
-.sec-num{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:4px;color:var(--text-d);display:block;margin-bottom:4px}
-.sec-ttl{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;background:linear-gradient(120deg,var(--gold-d),var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-ttl-b{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;background:linear-gradient(120deg,var(--blue-d),var(--blue),var(--blue-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-desc{padding:0 5% 24px;max-width:700px;margin:0 auto;font-size:13.5px;font-weight:300;color:var(--text-m);line-height:1.8}
-.sec-refresh-row{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 5% 16px;max-width:1440px;margin:0 auto}
+        /* Top Bar & Ticker */
+        .ticker-container {
+            background: #111827;
+            color: #fff;
+            padding: 8px 0;
+            font-size: 0.85rem;
+            overflow: hidden;
+            position: relative;
+        }
 
-/* D3.js Map Styles */
-.map-wrap{padding:0 5%;max-width:1440px;margin:0 auto;display:flex;gap:20px;flex-wrap:wrap;}
-#africa-map{flex:2;min-width:300px;background:var(--card);border:1px solid var(--border);height:500px;position:relative;}
-.map-panel{flex:1;min-width:250px;background:var(--card);border:1px solid var(--border);padding:30px;}
-.map-panel h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--blue);margin-bottom:20px;}
-.data-row{display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:12px 0;font-size:14px;color:var(--text-m);}
-.data-row span:last-child{font-weight:600;color:var(--text);}
-.country-path{stroke:#fff;stroke-width:0.5px;transition:fill 0.2s, stroke-width 0.2s;cursor:pointer;}
-.country-path:hover{stroke:var(--gold-d);stroke-width:1.5px;}
+        .ticker-wrapper {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 25s linear infinite;
+        }
 
-/* Glossary Styles */
-.gloss-input{width:100%;max-width:400px;padding:12px 18px;margin-bottom:24px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .3s;}
-.gloss-input:focus{border-color:var(--blue);}
-.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);}
-.gloss-card{background:var(--card);padding:22px;}
-.gloss-term{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--blue);margin-bottom:6px;}
-.gloss-theme{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold-d);margin-bottom:10px;}
-.gloss-def{font-size:12.5px;font-weight:300;color:var(--text-m);line-height:1.7;}
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 50px;
+        }
 
-/* Grids */
-.grid-wrap{padding:0 5%;max-width:1440px;margin:0 auto}
-.arts-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
-.arts-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
-.art{background:var(--card);cursor:pointer;transition:background .3s;position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;}
-.art:hover{background:var(--card-h)}
-.art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:transparent;transition:background .35s}
-.art:hover::after{background:var(--gold-d)}
-.art-img-wrap{width:100%;height:180px;overflow:hidden;background:var(--border);position:relative}
-.art-body{padding:22px 26px 22px;flex:1;display:flex;flex-direction:column}
-.art-cat{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:10px;text-transform:uppercase;}
-.art-cat.g{color:var(--gold-d)}
-.art-ttl{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;line-height:1.3;color:var(--text);margin-bottom:10px;transition:color .3s;flex:1}
-.art:hover .art-ttl{color:var(--blue)}
-.art-exc{font-size:12px;font-weight:300;color:var(--text-m);line-height:1.75;margin-bottom:18px}
-.art-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
-.art-meta{font-size:10px;color:var(--text-d)}
-.art-arr{width:28px;height:28px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-d);transition:all .3s;flex-shrink:0}
-.art:hover .art-arr{border-color:var(--blue);background:var(--blue);color:#fff}
+        .ticker-item span {
+            margin-right: 8px;
+        }
 
-/* Divers */
-.career-card{background:var(--card);padding:28px;display:flex;flex-direction:column;transition:background .3s;border:1px solid transparent}
-.career-card:hover{background:var(--bg2);border-color:var(--border)}
-.career-icon{font-size:30px;margin-bottom:12px;line-height:1}
-.career-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.2}
-.career-desc{font-size:12px;font-weight:300;color:var(--text-m);line-height:1.75;margin-bottom:14px;flex:1}
-.career-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.tag{background:rgba(29,78,143,.08);border:1px solid rgba(29,78,143,.2);font-size:9.5px;font-weight:500;letter-spacing:1px;color:var(--blue);padding:3px 10px}
-.tag-pe{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold-d)}
-.career-sector{font-size:10.5px;color:var(--text-d);padding-top:12px;border-top:1px solid var(--border)}
-.career-sector span{color:var(--blue);font-weight:500}
-.thinker-card{background:var(--card);padding:26px;display:flex;flex-direction:column;transition:background .3s;border:1px solid transparent}
-.thinker-card:hover{background:var(--bg2);border-color:var(--border)}
-.thinker-emoji{font-size:34px;margin-bottom:12px;line-height:1}
-.thinker-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--blue);line-height:1;margin-bottom:3px}
-.thinker-years{font-size:10px;color:var(--text-d);letter-spacing:1px;margin-bottom:8px}
-.thinker-role{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2.5px;color:var(--gold-d);margin-bottom:12px}
-.thinker-quote{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--gold);padding:8px 14px;border-left:2px solid var(--gold-d);margin-bottom:12px;line-height:1.5}
-.thinker-desc{font-size:11.5px;font-weight:300;color:var(--text-m);line-height:1.75;flex:1;margin-bottom:12px}
-.thinker-impact{font-size:10px;color:var(--text-d);padding-top:10px;border-top:1px solid var(--border)}
-.thinker-impact span{color:var(--gold-d);font-weight:500}
-.bio-section{background:var(--blue-d);padding:80px 5%}
-.bio-inner{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:64px;align-items:start}
-.bio-avatar{display:flex;flex-direction:column;align-items:center;gap:14px}
-.avatar-ring{width:180px;height:180px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1D4E8F 0%,#0F3060 100%)}
-.avatar-initials{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;color:var(--gold);line-height:1}
-.avatar-title{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-align:center}
-.avatar-school{font-size:11px;font-weight:300;color:rgba(255,255,255,.6);text-align:center;line-height:1.5;margin-top:4px}
-.bio-label{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:12px}
-.bio-name{font-family:'Cormorant Garamond',serif;font-size:50px;font-weight:700;color:#fff;line-height:1;margin-bottom:8px}
-.bio-role{font-size:11px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:28px}
-.bio-text{font-size:14px;font-weight:300;color:rgba(255,255,255,.8);line-height:1.9;margin-bottom:18px;max-width:680px}
-.bio-text strong{color:var(--gold-l);font-weight:500}
-.bio-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.bio-badge{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold-l);font-size:10.5px;font-weight:500;letter-spacing:1.5px;padding:5px 14px}
-.cta-section{padding:72px 5%;max-width:1440px;margin:0 auto}
-.cta-inner{background:var(--card);border:1px solid var(--border);padding:72px 60px;text-align:center;position:relative;overflow:hidden}
-.cta-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-d),var(--blue),var(--gold),var(--blue),var(--blue-d))}
-.cta-eyebrow{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:5px;color:var(--blue);margin-bottom:18px}
-.cta-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,56px);font-weight:700;line-height:1.1;background:linear-gradient(135deg,var(--blue-d),var(--blue),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px}
-.cta-sub{font-size:13.5px;font-weight:300;color:var(--text-m);line-height:1.8;margin-bottom:40px;max-width:440px;margin-left:auto;margin-right:auto}
-.cta-form{display:flex;max-width:440px;margin:0 auto}
-.cta-input{flex:1;background:var(--bg);border:1px solid var(--border);border-right:none;color:var(--text);padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .3s}
-.cta-input:focus{border-color:var(--blue)}
-.cta-input::placeholder{color:var(--text-d)}
-.cta-btn{background:var(--blue);border:none;color:#fff;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .3s;white-space:nowrap}
-.cta-btn:hover{background:var(--blue-l)}
-.cta-note{font-size:10.5px;color:var(--text-d);margin-top:14px}
-footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--bg2)}
-.ft-inner{max-width:1440px;margin:0 auto}
-.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:44px}
-.ft-brand p{font-size:12.5px;font-weight:300;color:var(--text-m);line-height:1.85;margin-top:18px;max-width:260px}
-.ft-col h4{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--blue);margin-bottom:20px}
-.ft-col ul{list-style:none}
-.ft-col ul li{margin-bottom:10px}
-.ft-col ul li a{text-decoration:none;font-size:12.5px;font-weight:300;color:var(--text-m);transition:color .3s}
-.ft-col ul li a:hover{color:var(--blue)}
-.ft-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:24px;border-top:1px solid var(--border)}
-.ft-copy{font-size:10.5px;font-weight:300;color:var(--text-d);letter-spacing:.5px}
-.ft-socials{display:flex;gap:10px}
-.soc{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--text-m);font-size:12px;font-weight:600;transition:all .3s}
-.soc:hover{border-color:var(--blue);color:var(--blue)}
-.fu{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
-.fu.vis{opacity:1;transform:translateY(0)}
-@media(max-width:1100px){.nav-links{display:none}.ham{display:flex}.hero-grid{grid-template-columns:1fr;gap:40px}.hero-headline{font-size:52px}.mkt-inner{grid-template-columns:repeat(3,1fr)}.arts-4{grid-template-columns:repeat(2,1fr)}.arts-3{grid-template-columns:repeat(2,1fr)}.ft-top{grid-template-columns:1fr 1fr;gap:36px}.bio-inner{grid-template-columns:1fr;gap:36px}.bio-avatar{flex-direction:row;gap:28px}.art-highlight ul{grid-template-columns:1fr}}
-@media(max-width:768px){.arts-3,.arts-4{grid-template-columns:1fr}.mkt-inner{grid-template-columns:repeat(2,1fr)}.hero{padding:48px 5% 36px}.cta-inner{padding:48px 24px}.cta-form{flex-direction:column}.cta-input{border-right:1px solid var(--border);border-bottom:none}.sec-ttl,.sec-ttl-b{font-size:30px}.map-wrap{flex-direction:column;}}
-@media(max-width:480px){nav{padding:0 20px}.hero{padding:40px 20px 32px}.grid-wrap{padding:0 20px}.ft-top{grid-template-columns:1fr;gap:28px}.ft-bottom{flex-direction:column;gap:16px;text-align:center}.bio-avatar{flex-direction:column;text-align:center}.bio-name{font-size:38px}.cta-section{padding:48px 20px}}
-</style>
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* Header & Navigation */
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .header-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-area span {
+            color: var(--accent);
+        }
+
+        .nav-desktop {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-desktop a {
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-desktop a:hover {
+            color: var(--primary-light);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: #fff;
+            z-index: 2000;
+            box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            padding: 30px 20px;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 30px;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            margin-top: 60px;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 20px;
+        }
+
+        .mobile-nav-links a {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Layout Main */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        /* Content Sections */
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Articles & Cards */
+        .featured-article {
+            margin-bottom: 40px;
+        }
+
+        .featured-img {
+            width: 100%;
+            height: 400px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .article-title {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .article-excerpt {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .news-card-img {
+            width: 100%;
+            height: 180px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+        }
+
+        .news-card-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        /* Sidebar Elements */
+        .sidebar-widget {
+            background: var(--bg-light);
+            padding: 24px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .dict-entry {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dict-entry:last-child {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dict-word {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .dict-def {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Interactive Map Area Preview */
+        .map-preview {
+            width: 100%;
+            height: 250px;
+            background: #dde1e7;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            padding: 60px 20px 20px;
+            font-size: 0.9rem;
+            border-top: 4px solid var(--primary);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(2, 1fr);
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .footer-brand h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .footer-links h3 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 20px auto 0;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 968px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .nav-desktop {
+                display: none;
+            }
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .featured-img {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="bar"></div>
 
-<div id="mmenu">
-  <button id="mclose" onclick="closeMM()">✕</button>
-  <a href="#marches"  onclick="closeMM()">Marchés</a>
-  <a href="#economie" onclick="closeMM()">Économie</a>
-  <a href="#articles" onclick="closeMM()">Articles</a>
-  <a href="#metiers"  onclick="closeMM()">Métiers</a>
-  <a href="#penseurs" onclick="closeMM()">Penseurs</a>
-  <a href="#bio"      onclick="closeMM()">À Propos</a>
-</div>
-
-<div id="art-modal">
-  <div class="modal-nav">
-    <button class="modal-back" onclick="closeModal()">← Retour</button>
-    <span class="modal-pub">The Finafrica News</span>
-    <span></span>
-  </div>
-  <div id="m-img"></div>
-  <div class="modal-body">
-    <div class="modal-cat-lbl" id="m-cat"></div>
-    <h1 class="modal-title" id="m-title"></h1>
-    <div class="modal-meta-row">
-      <span id="m-date"></span><span class="sep">·</span>
-      <span id="m-read"></span><span class="sep">·</span>
-      <span>The Finafrica News</span>
-    </div>
-    <div id="m-content"></div>
-  </div>
-</div>
-
-<header>
-  <nav>
-    <a href="#" class="logo"><svg width="46" height="46" viewBox="0 0 46 46" fill="none"><circle cx="23" cy="23" r="21.5" fill="#1D4E8F" stroke="#C9A84C" stroke-width="1.3"/><rect x="12" y="13" width="2.8" height="20" fill="#C9A84C" rx=".3"/><rect x="12" y="13" width="13" height="2.8" fill="#C9A84C" rx=".3"/><rect x="12" y="21" width="9.5" height="2.8" fill="#C9A84C" rx=".3"/><polyline points="26,30 29.5,24 33,26.5 37,18" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="37" cy="18" r="2" fill="#C9A84C"/><line x1="8" y1="38" x2="38" y2="38" stroke="#C9A84C" stroke-width=".6" opacity=".35"/></svg><div class="logo-txt"><span class="logo-the">The</span><span class="logo-name">Finafrica</span><span class="logo-sub">News</span></div></a>
-    <ul class="nav-links">
-      <li><a href="#marches">Marchés</a></li>
-      <li><a href="#economie">Économie</a></li>
-      <li><a href="#articles">Articles</a></li>
-      <li><a href="#metiers">Métiers</a></li>
-      <li><a href="#penseurs">Penseurs</a></li>
-      <li><a href="#bio">À Propos</a></li>
-    </ul>
-    <div style="display:flex;align-items:center;gap:14px">
-      <button class="btn-sub" onclick="scrollCTA()">S'abonner</button>
-      <button class="ham" onclick="openMM()"><span></span><span></span><span></span></button>
-    </div>
-  </nav>
-  <div class="ticker">
-    <div class="ticker-inner">
-      <span class="ticker-lbl">LIVE</span>
-      <div class="ticker-scroll"><div class="ticker-track">
-        <span class="ticker-item">BRVM Composite 218,46 <span class="t-up">▲+1,2%</span><em>|</em></span>
-        <span class="ticker-item">S&amp;P 500 : 5 421 pts <span class="t-up">▲+0,4%</span><em>|</em></span>
-        <span class="ticker-item">CAC 40 : 8 214 pts <span class="t-up">▲+0,3%</span><em>|</em></span>
-        <span class="ticker-item">SONATEL 14 500 FCFA <span class="t-up">▲+1,8%</span><em>|</em></span>
-        <span class="ticker-item">Or 2 480$/oz <span class="t-up">▲+0,5%</span><em>|</em></span>
-        <span class="ticker-item">Brent 83,14$ <span class="t-dn">▼−0,7%</span><em>|</em></span>
-        <span class="ticker-item">XOF/USD 600,42 <span class="t-up">▲+0,2%</span><em>|</em></span>
-        <span class="ticker-item">Bitcoin 67 400$ <span class="t-dn">▼−1,2%</span><em>|</em></span>
-        <span class="ticker-item">BCEAO Taux 3,5%<em>|</em></span>
-      </div></div>
-    </div>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="hero-top fu">
-    <span class="badge-ed">Édition N°02 — Juin 2026</span>
-    <span class="badge-live"><span class="dot"></span><span id="live-date">…</span></span>
-  </div>
-  <div class="hero-grid">
-    <div class="fu" style="transition-delay:.08s">
-      <h1 class="hero-headline">Votre Veille<br>Financière<br>Africaine.</h1>
-      <p class="hero-desc"><strong>The Finafrica News</strong> décrypte les marchés, l'économie africaine et mondiale, vous offre une éducation financière concrète et oriente votre carrière en finance.</p>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-n">54</span><span class="stat-l">Pays couverts</span></div>
-        <div class="stat"><span class="stat-n">5</span><span class="stat-l">Rubriques</span></div>
-        <div class="stat"><span class="stat-n">3×</span><span class="stat-l">Par semaine</span></div>
-      </div>
-    </div>
-    <div class="feat-card fu" style="transition-delay:.18s" onclick="openModal(0)" title="Lire l'article complet">
-      <div class="feat-img">
-        <div class="cover-grad cg-hero" style="height:100%"><span class="cg-icon" style="font-size:80px">📊</span></div>
-      </div>
-      <div class="feat-body">
-        <div class="feat-tag">◆ À la Une</div>
-        <h2 class="feat-title">BRVM, S&P 500, CAC 40 : les marchés mondiaux entrent dans une nouvelle ère</h2>
-        <p class="feat-excerpt">Entre la consolidation des bourses africaines, le rally technologique américain et les incertitudes européennes, les marchés d'investissement traversent une transformation structurelle en 2026.</p>
-        <div class="feat-footer">
-          <span class="feat-meta">7 Juin 2026 · 8 min de lecture</span>
-          <span class="read-more">Lire la suite <svg class="rm-arr" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <!-- Top Ticker Bar -->
+    <div class="ticker-container">
+        <div class="ticker-wrapper">
+            <div class="ticker-item"><span>BRVM Composite:</span> <strong class="trend-up">215.42 (+0.34%)</strong></div>
+            <div class="ticker-item"><span>USD/XOF:</span> <strong>604.25 (-0.12%)</strong></div>
+            <div class="ticker-item"><span>EUR/XOF:</span> <strong>655.96 (Fixe)</strong></div>
+            <div class="ticker-item"><span>BCEAO Taux Directeur:</span> <strong>3.50%</strong></div>
+            <div class="ticker-item"><span>BRVM Composite:</span> <strong class="trend-up">215.42 (+0.34%)</strong></div>
+            <div class="ticker-item"><span>USD/XOF:</span> <strong>604.25 (-0.12%)</strong></div>
         </div>
-      </div>
     </div>
-  </div>
-</section>
 
-<div class="mkt-bar fu">
-  <div class="mkt-inner" id="markets-bar">
-    <div style="padding: 20px; font-size: 12px; color: var(--text-m);">Connexion API Alpha Vantage en cours...</div>
-  </div>
-</div>
+    <!-- Header Section -->
+    <header>
+        <div class="header-main">
+            <div class="logo-area">
+                <a href="#"><h1>The Finafrica<span>News</span></h1></a>
+            </div>
+            <nav>
+                <ul class="nav-desktop">
+                    <li><a href="#marches">Marchés</a></li>
+                    <li><a href="#economie">Économie</a></li>
+                    <li><a href="#guide-etudiant">Guide Étudiant</a></li>
+                    <li><a href="#carte">Carte Interactive</a></li>
+                    <li><a href="#metiers">Métiers</a></li>
+                </ul>
+            </nav>
+            <button class="menu-btn" id="openMenuBtn">
+                <i data-lucide="menu" size="24"></i>
+            </button>
+        </div>
+    </header>
 
-<div class="sec-hdr fu" id="carte"><div class="sec-hdr-c"><span class="sec-num">◆ CARTE</span><h2 class="sec-ttl-b">Indicateurs Macroéconomiques Africains</h2></div></div>
-<div class="map-wrap fu">
-  <div id="africa-map"></div>
-  <div class="map-panel">
-    <h3 id="mp-title">Sélectionnez un pays</h3>
-    <p style="font-size:13px; font-weight:300; color:var(--text-m); margin-bottom:20px; line-height: 1.6;">Survolez ou cliquez sur un pays de la carte pour afficher ses données économiques récentes.</p>
-    <div id="panel-data" style="display:none;">
-      <div class="data-row"><span>PIB / Habitant</span><span id="pd-pib"></span></div>
-      <div class="data-row"><span>Croissance (2026)</span><span id="pd-croissance"></span></div>
-      <div class="data-row"><span>Inflation</span><span id="pd-inflation"></span></div>
-      <div class="data-row"><span>Devise</span><span id="pd-devise"></span></div>
+    <!-- Mobile Navigation Menu -->
+    <div class="overlay" id="menuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="closeMenuBtn">
+            <i data-lucide="x" size="24"></i>
+        </button>
+        <ul class="mobile-nav-links">
+            <li><a href="#marches" class="mobile-link">Marchés</a></li>
+            <li><a href="#economie" class="mobile-link">Économie</a></li>
+            <li><a href="#guide-etudiant" class="mobile-link">Guide Étudiant</a></li>
+            <li><a href="#carte" class="mobile-link">Carte Interactive</a></li>
+            <li><a href="#metiers" class="mobile-link">Métiers</a></li>
+        </ul>
     </div>
-  </div>
-</div>
 
-<div class="sec-hdr fu" id="marches"><div class="sec-hdr-c"><span class="sec-num">◆ 01 / 05</span><h2 class="sec-ttl">Marchés &amp; Investissements</h2></div></div>
-<div class="grid-wrap"><div class="arts-3 fu" id="grid-marches"></div></div>
+    <!-- Main Content Grid -->
+    <main>
+        <div class="grid-container">
+            
+            <!-- Left Column: News Sections -->
+            <div class="left-column">
+                
+                <!-- Section Marchés -->
+                <section id="marches" style="margin-bottom: 50px;">
+                    <h2 class="section-title">Marchés Financiers</h2>
+                    <article class="featured-article">
+                        <div class="featured-img">
+                            <i data-lucide="trending-up" size="48"></i>
+                        </div>
+                        <div class="article-meta">BRVM • Analyse de Marché</div>
+                        <h3 class="article-title">La BRVM maintient sa dynamique de croissance au terme du premier semestre</h3>
+                        <p class="article-excerpt">Portée par les performances solides des secteurs bancaires et des télécoms, la bourse régionale de l'UEMOA affiche des indicateurs au vert, attirant de nouveaux investisseurs internationaux.</p>
+                    </article>
 
-<div class="sec-hdr fu" id="economie"><div class="sec-hdr-c"><span class="sec-num">◆ 02 / 05</span><h2 class="sec-ttl-b">Actualités Économiques (En Direct)</h2></div></div>
-<p class="sec-desc fu">Ces actualités sont générées en temps réel via NewsAPI, centrées sur la finance et l'économie du continent africain.</p>
-<div class="grid-wrap"><div class="arts-3 fu" id="grid-economie"></div></div>
+                    <div class="news-grid">
+                        <div class="news-card">
+                            <div class="news-card-img"><i data-lucide="bar-chart-2" size="32"></i></div>
+                            <div class="article-meta">Obligations</div>
+                            <h4 class="news-card-title">Le Sénégal lève avec succès 300 milliards FCFA sur le marché financier régional</h4>
+                        </div>
+                        <div class="news-card">
+                            <div class="news-card-img"><i data-lucide="dollar-sign" size="32"></i></div>
+                            <div class="article-meta">Devises</div>
+                            <h4 class="news-card-title">Impact des politiques de la Fed sur les économies de la zone CFA : Ce qu'il faut retenir</h4>
+                        </div>
+                    </div>
+                </section>
 
-<div class="sec-hdr fu" id="articles"><div class="sec-hdr-c"><span class="sec-num">◆ 03 / 05</span><h2 class="sec-ttl">Articles Thématiques</h2></div></div>
-<div class="grid-wrap"><div class="arts-4 fu" id="grid-articles"></div></div>
+                <!-- Section Économie -->
+                <section id="economie" style="margin-bottom: 50px;">
+                    <h2 class="section-title">Économie Africaine</h2>
+                    <div class="news-grid">
+                        <div class="news-card">
+                            <div class="news-card-img"><i data-lucide="globe" size="32"></i></div>
+                            <div class="article-meta">Intégration</div>
+                            <h4 class="news-card-title">ZLECAF : Avancées opérationnelles et opportunités pour le secteur privé ouest-africain</h4>
+                        </div>
+                        <div class="news-card">
+                            <div class="news-card-img"><i data-lucide="zap" size="32"></i></div>
+                            <div class="article-meta">Énergie</div>
+                            <h4 class="news-card-title">Financement des infrastructures énergétiques en Afrique : Les nouveaux modèles de PPP</h4>
+                        </div>
+                    </div>
+                </section>
 
-<div class="sec-hdr fu" id="metiers"><div class="sec-hdr-c"><span class="sec-num">◆ 04 / 05</span><h2 class="sec-ttl-b">Métiers Après un Master Finance</h2></div></div>
-<p class="sec-desc fu">Un master en finance ouvre l'accès aux carrières les plus recherchées de l'économie mondiale. Découvrez les débouchés classiques et les métiers du Private Equity.</p>
-<div class="sub-hdr fu"><h3>🏛️ Finance Classique &amp; Banque</h3></div>
-<div class="grid-wrap"><div class="arts-3 fu" id="grid-classic" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)"></div></div>
-<div class="sub-hdr fu" style="padding-top:28px"><h3>💎 Private Equity &amp; Investissement</h3></div>
-<div class="grid-wrap"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)" class="fu" id="grid-pe"></div></div>
+            </div>
 
-<div class="sec-hdr fu" id="penseurs"><div class="sec-hdr-c"><span class="sec-num">◆ 05 / 05</span><h2 class="sec-ttl">Grands Penseurs Économiques</h2></div></div>
-<div class="grid-wrap"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)" class="fu" id="grid-penseurs"></div></div>
+            <!-- Right Column: Sidebar -->
+            <div class="sidebar">
+                
+                <!-- Dictionary Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Le Dictionnaire Financier</h3>
+                    <div class="dict-entry">
+                        <div class="dict-word">BRVM</div>
+                        <div class="dict-def">Bourse Régionale des Valeurs Mobilières. Institution financière spécialisée commune aux 8 États de l'UEMOA.</div>
+                    </div>
+                    <div class="dict-entry">
+                        <div class="dict-word">Taux Directeur</div>
+                        <div class="dict-def">Principal instrument de politique monétaire utilisé par une banque centrale pour réguler l'économie.</div>
+                    </div>
+                    <div class="dict-entry">
+                        <div class="dict-word">Obligation</div>
+                        <div class="dict-def">Titre de créance émis par une entreprise ou un État pour emprunter des capitaux sur les marchés.</div>
+                    </div>
+                </div>
 
-<div class="sec-hdr fu" id="glossaire"><div class="sec-hdr-c"><span class="sec-num">◆ GLOSSAIRE</span><h2 class="sec-ttl-b">Dictionnaire Financier Interactif</h2></div></div>
-<div class="grid-wrap fu">
-  <input type="text" id="gloss-search" class="gloss-input" placeholder="Rechercher un terme (ex: BRVM, Eurobonds)...">
-  <div class="gloss-grid" id="gloss-grid"></div>
-</div>
+                <!-- Interactive Map Area Preview -->
+                <div class="sidebar-widget" id="carte">
+                    <h3 class="widget-title">Indicateurs Macroéconomiques</h3>
+                    <div class="map-preview">
+                        <i data-lucide="map" size="36" style="margin-bottom: 10px; color: var(--primary);"></i>
+                        <p style="font-weight: 600; margin-bottom: 5px;">Carte Interactive Africaine</p>
+                        <p style="font-size: 0.85rem;">Cliquez sur un pays pour visualiser ses indicateurs clés de performance.</p>
+                    </div>
+                </div>
 
-<section class="cta-section fu" id="subscribe">
-  <div class="cta-inner">
-    <p class="cta-eyebrow">◆ Rejoignez la communauté Finafrica</p>
-    <h2 class="cta-title">Restez au cœur<br>de la finance africaine</h2>
-    <p class="cta-sub">3 fois par semaine : marchés, économie africaine, éducation financière et carrières — directement dans votre boîte mail, gratuitement.</p>
-    <div class="cta-form">
-      <input type="email" id="email-in" class="cta-input" placeholder="Votre adresse email…">
-      <button class="cta-btn" id="sub-btn" onclick="handleSub()">S'abonner →</button>
-    </div>
-    <p class="cta-note">✦ 100% gratuit · Sans spam · Désinscription en 1 clic</p>
-  </div>
-</section>
+                <!-- Career Corner Section -->
+                <div class="sidebar-widget" id="metiers">
+                    <h3 class="widget-title">Fiches Métiers Finance</h3>
+                    <div class="dict-entry">
+                        <div class="dict-word">Analyste Crédit</div>
+                        <div class="dict-def">Évalue le risque financier des dossiers de demande de financement présentés par les particuliers ou entreprises.</div>
+                    </div>
+                    <div class="dict-entry">
+                        <div class="dict-word">Gestionnaire de Patrimoine</div>
+                        <div class="dict-def">Conseille une clientèle privée ou institutionnelle dans la structuration et l'optimisation de ses actifs.</div>
+                    </div>
+                </div>
 
-<section class="bio-section" id="bio">
-  <div class="bio-inner">
-    <div class="bio-avatar">
-      <div class="avatar-ring"><span class="avatar-initials">MS</span></div>
-      <div><div class="avatar-title">Fondateur &amp; Rédacteur en Chef</div><div class="avatar-school">Institut Africain de<br>Management — Dakar</div></div>
-    </div>
-    <div>
-      <div class="bio-label">◆ Le Fondateur</div>
-      <h2 class="bio-name">Moustapha Sall</h2>
-      <div class="bio-role">Fondateur · The Finafrica News</div>
-      <p class="bio-text"><strong>Moustapha Sall</strong> est étudiant en 2ème année de <strong>Banking and Financial Engineering</strong> à l'Institut Africain de Management (IAM) à Dakar, Sénégal. Passionné par les marchés financiers, l'analyse économique et l'éducation financière, il a fondé <strong>The Finafrica News</strong> avec une conviction : l'Afrique a besoin de voix locales, formées et engagées, pour informer et éduquer la prochaine génération d'acteurs économiques du continent.</p>
-      <p class="bio-text">Fort d'une formation solide en ingénierie bancaire, en analyse financière et en stratégie d'entreprise, Moustapha croit que la maîtrise des outils financiers est un levier essentiel du développement africain. Sa newsletter reflète cette ambition : rendre la finance africaine et mondiale <strong>accessible, compréhensible et actionnable</strong> pour tous.</p>
-      <div class="bio-badges">
-        <span class="bio-badge">Banking &amp; Financial Engineering</span>
-        <span class="bio-badge">IAM Dakar</span>
-        <span class="bio-badge">Finance Africaine</span>
-        <span class="bio-badge">Analyse de Marché</span>
-        <span class="bio-badge">UEMOA · Sénégal</span>
-      </div>
-    </div>
-  </div>
-</section>
+            </div>
+        </div>
 
-<footer>
-  <div class="ft-inner">
-    <div class="ft-top">
-      <div class="ft-brand">
-        <a href="#" class="logo"><svg width="38" height="38" viewBox="0 0 46 46" fill="none"><circle cx="23" cy="23" r="21.5" fill="#1D4E8F" stroke="#C9A84C" stroke-width="1.3"/><rect x="12" y="13" width="2.8" height="20" fill="#C9A84C" rx=".3"/><rect x="12" y="13" width="13" height="2.8" fill="#C9A84C" rx=".3"/><rect x="12" y="21" width="9.5" height="2.8" fill="#C9A84C" rx=".3"/><polyline points="26,30 29.5,24 33,26.5 37,18" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="37" cy="18" r="2" fill="#C9A84C"/></svg><div class="logo-txt"><span class="logo-the">The</span><span class="logo-name">Finafrica</span><span class="logo-sub">News</span></div></a>
-        <p>La newsletter de référence pour comprendre la finance africaine et mondiale — marchés, économie, éducation et carrières.</p>
-      </div>
-      <div class="ft-col"><h4>Rubriques</h4><ul>
-        <li><a href="#marches">Marchés &amp; Investissements</a></li>
-        <li><a href="#economie">Économie Sénégal/UEMOA</a></li>
-        <li><a href="#articles">Articles Thématiques</a></li>
-        <li><a href="#metiers">Métiers Finance &amp; PE</a></li>
-        <li><a href="#penseurs">Grands Penseurs</a></li>
-      </ul></div>
-      <div class="ft-col"><h4>Marchés</h4><ul>
-        <li><a href="#">BRVM — Abidjan</a></li>
-        <li><a href="#">S&amp;P 500 — New York</a></li>
-        <li><a href="#">CAC 40 — Paris</a></li>
-        <li><a href="#">JSE — Johannesburg</a></li>
-        <li><a href="#">Forex Afrique</a></li>
-      </ul></div>
-      <div class="ft-col"><h4>The Finafrica</h4><ul>
-        <li><a href="#bio">À propos</a></li>
-        <li><a href="#">Contribuer</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Confidentialité</a></li>
-      </ul></div>
-    </div>
-    <div class="ft-bottom">
-      <p class="ft-copy">© 2026 The Finafrica News — Fondé par Moustapha Sall. Tous droits réservés.</p>
-      <div class="ft-socials">
-        <a href="#" class="soc">𝕏</a><a href="#" class="soc">in</a>
-        <a href="#" class="soc">✈</a><a href="#" class="soc">W</a>
-      </div>
-    </div>
-  </div>
-</footer>
+        <!-- ========================================== -->
+        <!-- NOUVELLE SECTION INCLUSE : GUIDE ÉTUDIANT  -->
+        <!-- ========================================== -->
+        <section id="guide-etudiant" style="padding: 60px 0; background-color: #f8f9fa; border-top: 1px solid #e9ecef; margin-top: 20px; border-radius: 6px;">
+          <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            
+            <!-- En-tête de la section -->
+            <div style="text-align: center; margin-bottom: 50px;">
+              <span style="color: #3b82f6; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 10px;">◆ Ressources & Carrière</span>
+              <h2 style="font-size: 2.5rem; color: #1f2937; margin: 0; font-weight: 800;">Guide Étudiant : Décrocher son Stage en Finance</h2>
+              <p style="color: #4b5563; font-size: 1.1rem; max-width: 700px; margin: 15px auto 0;">Un espace dédié aux futurs cadres de la finance africaine pour identifier les meilleures opportunités et réussir ses démarches de recrutement.</p>
+            </div>
 
-<script>
-// --- CLÉS API ---
-const ALPHA_VANTAGE_KEY = 'RPVIVHOXNBCGVUFB';
-const NEWS_API_KEY = '5e155aa4091447518330825d99823c12';
+            <!-- PARTIE 1 : Les Sociétés Bancaires et Financières à Suivre -->
+            <div style="margin-bottom: 50px;">
+              <h3 style="font-size: 1.5rem; color: #111827; border-left: 4px solid #3b82f6; padding-left: 15px; margin-bottom: 25px;">1. Top 10 des Institutions Financières à Suivre (Sénégal & UEMOA)</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">CBAO - Groupe Attijariwafa bank</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque Commerciale & Retail</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Leader historique au Sénégal avec un réseau étendu (notamment à Dakar et des branches stratégiques à Touba Khaïra).</p>
+                </div>
 
-// --- DONNÉES DE BASE ---
-let DATA={
-  marches:[
-    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au S1 2026",excerpt:"La BRVM affiche une performance solide avec un indice Composite à 218,46 pts.",date:"7 Juin 2026",read:"8 min",det:0, coverType:"grad", coverClass:"cg-brvm"},
-    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA se poursuit",excerpt:"Nvidia, Microsoft et Apple tirent l'indice vers de nouveaux records.",date:"6 Juin 2026",read:"6 min",det:1, coverType:"grad", coverClass:"cg-sp500"},
-    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 200 pts : banques et luxe tirent Paris",excerpt:"BNP Paribas, LVMH et TotalEnergies soutiennent l'indice.",date:"6 Juin 2026",read:"5 min",det:2, coverType:"grad", coverClass:"cg-cac40"}
-  ],
-  economie:[], // Sera rempli par l'API
-  articles:[
-    {emoji:"🥇",cat:"L'Or",title:"L'or à 2 480$/once : valeur refuge et couverture",excerpt:"Achats massifs des banques centrales : décryptage du métal précieux.",date:"6 Juin 2026",read:"8 min", coverType:"grad", coverClass:"cg-or"},
-    {emoji:"🛢️",cat:"Le Pétrole",title:"Pétrole et nouveaux producteurs africains",excerpt:"Sangomar, Tilenga : l'Afrique recompose sa carte énergétique.",date:"5 Juin 2026",read:"9 min", coverType:"grad", coverClass:"cg-petrole"},
-    {emoji:"📐",cat:"Éducation Financière",title:"Les intérêts composés : la 8ème merveille",excerpt:"Guide pratique de l'investisseur sur le long terme.",date:"4 Juin 2026",read:"7 min", coverType:"grad", coverClass:"cg-interet"},
-    {emoji:"💥",cat:"Histoire Financière",title:"La crise de 2008 : anatomie d'un effondrement",excerpt:"Retour sur la crise qui continue de façonner les régulations.",date:"3 Juin 2026",read:"10 min", coverType:"grad", coverClass:"cg-crise"}
-  ]
-};
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">BCEAO (et le COFEB)</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque Centrale & Recherche</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">La Banque Centrale des États de l'Afrique de l'Ouest. Le COFEB y centralise d'excellents programmes de formation et stages de recherche.</p>
+                </div>
 
-const DETAILS=[
-  {cat:"📈 BRVM — Performances",emoji:"📈",coverClass:"cg-brvm",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM",date:"7 Juin 2026",read:"8 min de lecture",blocks:[{t:"intro",v:"La BRVM confirme sa dynamique haussière avec un indice à 218,46 points."},{t:"p",v:"SONATEL (Sénégal Télécom) s'impose comme la locomotive de la BRVM, suivie par ORANGE CI et ECOBANK."}]},
-  {cat:"🇺🇸 S&P 500 — Marchés US",emoji:"🇺🇸",coverClass:"cg-sp500",title:"S&P 500 au-dessus des 5 400 pts",date:"6 Juin 2026",read:"6 min de lecture",blocks:[{t:"intro",v:"L'indice S&P 500 a franchi un nouveau record historique, porté par la tech."},{t:"p",v:"Nvidia, Microsoft et Apple représentent une large part de cette croissance."}]},
-  {cat:"🇫🇷 CAC 40 — Marchés Européens",emoji:"🇫🇷",coverClass:"cg-cac40",title:"CAC 40 à 8 200 pts",date:"6 Juin 2026",read:"5 min de lecture",blocks:[{t:"intro",v:"Le CAC 40 flirte avec les 8 200 points, tiré par les valeurs du luxe."},{t:"p",v:"LVMH, Hermès et BNP Paribas soutiennent l'indice parisien."}]}
-];
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">COFINA (Compagnie Financière Africaine)</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Mésofinance & Financement PME</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Idéal pour comprendre le financement de l'économie réelle et le tissu entrepreneurial africain.</p>
+                </div>
 
-const METIERS_CLASSIC=[
-  {emoji:"📊",titre:"Analyste Financier (CFA)",desc:"Évalue la santé des entreprises et marchés pour guider les décisions d'investissement.",tags:["Modélisation","Valorisation","Bloomberg"],secteur:"Banques · Asset Management"},
-  {emoji:"🏦",titre:"Banquier d'Affaires (M&A)",desc:"Conseille les entreprises sur fusions-acquisitions et levées de fonds.",tags:["M&A","Due diligence","Négociation"],secteur:"Banques d'investissement"},
-  {emoji:"⚠️",titre:"Risk Manager",desc:"Identifie, mesure et atténue les risques financiers d'une institution.",tags:["VaR & Stress tests","Bâle III/IV"],secteur:"Banques · Fintechs"}
-];
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">FBNBank Sénégal</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque Commerciale & Corporate</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Filiale de First Bank of Nigeria, dynamique sur le segment Corporate et le commerce transfrontalier.</p>
+                </div>
 
-const METIERS_PE=[
-  {emoji:"🔬",titre:"Analyste Private Equity",desc:"Modélise les LBO, analyse les cibles, réalise les études de marché.",tags:["Modélisation LBO","Évaluation"],secteur:"Fonds PE · Growth Equity"},
-  {emoji:"📋",titre:"Associate Private Equity",desc:"Structure les deals, gère les relations avec les cibles et banques.",tags:["Structuration","Term sheets"],secteur:"AfricInvest · Helios"},
-  {emoji:"⚡",titre:"Venture Capitalist (VC)",desc:"Investit dans des startups à fort potentiel et les accompagne.",tags:["Startup ecosystem","Cap table"],secteur:"Partech Africa · Orange Ventures"},
-  {emoji:"🌱",titre:"Impact Investing",desc:"Investit dans des entreprises à impact social/environnemental.",tags:["ESG","Blended finance"],secteur:"DFI · Fonds ESG"}
-];
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">Banque Islamique du Sénégal (BIS)</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Finance Islamique</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Une institution clé pour se spécialiser dans les instruments financiers alternatifs et conformes à la Sharia.</p>
+                </div>
 
-const PENSEURS=[
-  {emoji:"🏛️",nom:"Adam Smith",annees:"1723 — 1790",role:"Père du capitalisme libéral",oeuvre:"La Richesse des Nations",desc:"Sa théorie de la main invisible a posé les bases du marché libre.",impact:"Libéralisme · Main invisible"},
-  {emoji:"💡",nom:"John M. Keynes",annees:"1883 — 1946",role:"Père de la macroéconomie",oeuvre:"Théorie générale",desc:"Démontre qu'en période de crise, l'État doit intervenir pour relancer la demande.",impact:"Stimulus fiscal · Rôle de l'État"},
-  {emoji:"📊",nom:"Milton Friedman",annees:"1912 — 2006",role:"Champion du monétarisme",oeuvre:"Capitalisme et Liberté",desc:"A défendu les règles monétaires strictes (influence sur la BCEAO).",impact:"Monétarisme · Marchés libres"},
-  {emoji:"🌍",nom:"Amartya Sen",annees:"Né en 1933",role:"Prix Nobel",oeuvre:"Développement comme Liberté",desc:"A révolutionné la conception du développement via les capabilités.",impact:"Développement humain · IDH"}
-];
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">Société Financière Internationale (IFC)</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque de Développement & Private Equity</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Le bureau régional de Dakar (Groupe Banque Mondiale) recrute régulièrement des stagiaires en affaires et analyse financière.</p>
+                </div>
 
-// --- 1. INITIALISATION MARCHÉS (ALPHA VANTAGE + MOCK) ---
-async function initMarkets() {
-  const container = document.getElementById('markets-bar');
-  let finalMarkets = [];
-  const symbols = [
-    { id: 'brvm', name: 'BRVM Comp', isMock: true, val: '218.46', varStr: '+0.45%', up: true, data: [210,212,211,215,214,217,218.46] },
-    { id: 'spy', name: 'S&P 500', symbol: 'SPY', isMock: false },
-    { id: 'vgk', name: 'Europe', symbol: 'VGK', isMock: false },
-    { id: 'gold', name: 'Or (GLD)', symbol: 'GLD', isMock: false },
-    { id: 'oil', name: 'Pétrole (USO)', symbol: 'USO', isMock: false }
-  ];
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">Ecobank Sénégal</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque Panafricaine & Digitale</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Le géant panafricain offre une immersion unique dans la transformation digitale et l'inclusion financière des services bancaires.</p>
+                </div>
 
-  for (let sym of symbols) {
-    if (sym.isMock) { finalMarkets.push(sym); continue; }
-    try {
-      const res = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${sym.symbol}&apikey=${ALPHA_VANTAGE_KEY}`);
-      const data = await res.json();
-      const timeSeries = data['Time Series (Daily)'];
-      if (!timeSeries) throw new Error("Limite API atteinte");
-      const dates = Object.keys(timeSeries).slice(0, 7).reverse();
-      const prices = dates.map(d => parseFloat(timeSeries[d]['4. close']));
-      const currentPrice = prices[prices.length - 1];
-      const previousPrice = prices[prices.length - 2];
-      const percentChange = (((currentPrice - previousPrice) / previousPrice) * 100).toFixed(2);
-      finalMarkets.push({
-        id: sym.id, name: sym.name, val: currentPrice.toFixed(2), varStr: (percentChange>=0?'+':'')+percentChange+'%',
-        up: percentChange>=0, data: prices
-      });
-    } catch (e) {
-      // Données de secours si limite API des 25 requêtes dépassée
-      const mockData = sym.id === 'spy' ? [530,535,532,540,542,541,542] : (sym.id === 'vgk' ? [65,66,65.5,67,68,67.5,68.4] : [180,182,181,185,188,190,192]);
-      finalMarkets.push({ id: sym.id, name: sym.name, val: mockData[6].toFixed(2), varStr: '+0.5%', up: true, data: mockData });
-    }
-  }
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">BOA (Bank Of Africa) Sénégal</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque Commerciale</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Acteur incontournable du marché de l'UEMOA, un excellent terrain pour l'apprentissage du risque et de la gestion de portefeuille clientèle.</p>
+                </div>
 
-  container.innerHTML = finalMarkets.map(m => `
-    <div class="mkt-item">
-      <div class="mkt-name">${m.name}</div>
-      <div class="mkt-val">${m.val}</div>
-      <div class="mkt-chg ${m.up?'up':'dn'}">${m.up?'▲':'▼'} ${m.varStr}</div>
-      <div style="height:35px; width:100%; margin-top:8px;"><canvas id="chart-${m.id}"></canvas></div>
-    </div>
-  `).join('');
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">Sonatel (Direction Financière & FinTech)</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Corporate Finance & Mobile Money</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">La plus grande capitalisation de la BRVM. Sa direction financière et la branche Orange Money gèrent des flux de capitaux géants.</p>
+                </div>
 
-  finalMarkets.forEach(m => {
-    const ctx = document.getElementById(`chart-${m.id}`).getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: { labels: ['1','2','3','4','5','6','7'], datasets: [{ data: m.data, borderColor: m.up?'#15803D':'#DC2626', borderWidth: 2, tension: 0.3, pointRadius: 0 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins:{legend:{display:false}, tooltip:{enabled:false}}, scales:{x:{display:false}, y:{display:false}} }
-    });
-  });
-}
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                  <h4 style="margin: 0 0 10px 0; color: #1e3a8a;">Société Générale Sénégal (SGS)</h4>
+                  <p style="margin: 0; font-size: 0.9rem; color: #6b7280;"><strong>Secteur :</strong> Banque de Grande Clientèle & Retail</p>
+                  <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #4b5563;">Une référence pour acquérir les standards internationaux en conformité, structuration de dette et gestion globale des risques.</p>
+                </div>
 
-// --- 2. INITIALISATION ACTUALITÉS (NEWS API) ---
-async function initNews() {
-  const url = `https://newsapi.org/v2/everything?q=finance+économie+afrique+bceao&language=fr&sortBy=publishedAt&pageSize=3&apiKey=${NEWS_API_KEY}`;
-  const grads = ['cg-1', 'cg-2', 'cg-3', 'cg-4'];
-  const emojis = ['📰', '📊', '🌍', '💡'];
-  
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    if (data.status === "ok" && data.articles && data.articles.length > 0) {
-      DATA.economie = data.articles.map((a, index) => ({
-        emoji: emojis[index % emojis.length],
-        cat: a.source.name.substring(0, 15).toUpperCase(),
-        title: a.title,
-        excerpt: a.description ? a.description.substring(0, 120) + '...' : "Actualité économique africaine.",
-        date: new Date(a.publishedAt).toLocaleDateString('fr-FR'),
-        read: "En direct",
-        url: a.url, // Lien externe
-        coverType: "grad",
-        coverClass: grads[Math.floor(Math.random() * grads.length)]
-      }));
-    } else { throw new Error("API bloquée"); }
-  } catch (error) {
-    // Secours si NewsAPI bloque la requête CORS
-    DATA.economie = [
-      {emoji:"🇸🇳",cat:"ÉCONOMIE",title:"Sangomar : les revenus pétroliers transforment le budget",excerpt:"Le champ offshore de Sangomar génère ses premières royalties.",date:"Aujourd'hui",read:"7 min",det:3, coverType:"grad", coverClass:"cg-4"},
-      {emoji:"🌍",cat:"UEMOA",title:"BCEAO : taux à 3,5% — implications pour les 8 pays",excerpt:"La Banque Centrale reconduit sa politique monétaire.",date:"Aujourd'hui",read:"5 min",det:6, coverType:"grad", coverClass:"cg-2"},
-      {emoji:"🤝",cat:"AFRIQUE",title:"ZLECAf : les échanges intra-africains progressent",excerpt:"Le commerce entre États membres en hausse historique.",date:"Hier",read:"5 min",det:7, coverType:"grad", coverClass:"cg-3"}
-    ];
-  }
-  renderArts('economie');
-}
+              </div>
+            </div>
 
-// --- 3. CARTE D3.JS AFRIQUE ---
-const countryData = {
-  "Senegal": { pib: "$1,600", croiss: "7.1%", inf: "3.5%", dev: "Franc CFA (XOF)", color: "#1D4E8F" },
-  "Ivory Coast": { pib: "$2,500", croiss: "6.8%", inf: "4.0%", dev: "Franc CFA (XOF)", color: "#2F6DB5" },
-  "Nigeria": { pib: "$2,000", croiss: "3.2%", inf: "28.9%", dev: "Naira (NGN)", color: "#C9A84C" },
-  "South Africa": { pib: "$6,000", croiss: "1.2%", inf: "5.1%", dev: "Rand (ZAR)", color: "#8B6914" },
-  "Morocco": { pib: "$3,500", croiss: "3.1%", inf: "4.5%", dev: "Dirham (MAD)", color: "#4A87CE" },
-  "Kenya": { pib: "$2,200", croiss: "5.0%", inf: "6.5%", dev: "Shilling (KES)", color: "#E5C46B" }
-};
+            <!-- PARTIE 2 : Canaux de Recrutement & Astuces -->
+            <div style="margin-bottom: 50px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+              <h3 style="font-size: 1.5rem; color: #111827; border-left: 4px solid #10b981; padding-left: 15px; margin-bottom: 25px;">2. Stratégies d'Approche : Email, LinkedIn & Présentiel</h3>
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                
+                <div>
+                  <h4 style="color: #047857; margin-top: 0;">📩 Par Email (Candidature Spontanée)</h4>
+                  <p style="font-size: 0.9rem; line-height: 1.6; color: #4b5563;">L'email doit être chirurgical. Oubliez les lettres passe-partout. Indiquez clairement votre spécialité (ex: *Ingénierie Financière*) dès l'objet.</p>
+                  <ul style="font-size: 0.85rem; color: #4b5563; padding-left: 20px; margin-top: 10px;">
+                    <li><strong>Astuce :</strong> Envoyez vos emails le mardi ou jeudi matin entre 7h30 et 8h30 pour apparaître tout en haut de la boîte de réception des RH.</li>
+                    <li><strong>Format :</strong> Un objet percutant comme <em>"Candidature Stage - Analyste Crédit - [Votre Nom]"</em> avec un CV au format PDF uniquement.</li>
+                  </ul>
+                </div>
 
-async function initMap() {
-  const width = document.getElementById('africa-map').clientWidth;
-  const height = 500;
-  const svg = d3.select("#africa-map").append("svg").attr("width", width).attr("height", height);
-  const projection = d3.geoMercator().scale(350).translate([width / 2, height / 2 + 50]);
-  const path = d3.geoPath().projection(projection);
+                <div>
+                  <h4 style="color: #0284c7; margin-top: 0;">🌐 Via LinkedIn (Réseautage Stratégique)</h4>
+                  <p style="font-size: 0.9rem; line-height: 1.6; color: #4b5563;">Ne ciblez pas uniquement les Directeurs RH, ils sont sur-sollicités. Visez les "opérationnels" : Chefs d'agence, Analystes Senior, ou Responsables de département.</p>
+                  <ul style="font-size: 0.85rem; color: #4b5563; padding-left: 20px; margin-top: 10px;">
+                    <li><strong>Astuce :</strong> Envoyez une note d'invitation personnalisée de moins de 300 caractères demandant un court échange sur leur métier plutôt qu'un stage directement.</li>
+                    <li><strong>Profil :</strong> Ayez une bannière professionnelle, un titre clair (ex : *Étudiant en Master Banking & Financial Engineering*) et partagez la veille de votre site !</li>
+                  </ul>
+                </div>
 
-  try {
-    const response = await fetch("https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/africa.geojson");
-    const data = await response.json();
-    svg.selectAll("path").data(data.features).enter().append("path").attr("class", "country-path").attr("d", path)
-      .attr("fill", d => countryData[d.properties.name] ? countryData[d.properties.name].color : "#DEDCD8")
-      .on("mouseover", function(event, d) {
-        const name = d.properties.name;
-        const cdata = countryData[name] || { pib:"N/A", croiss:"-", inf:"-", dev:"-" };
-        document.getElementById('mp-title').innerText = name;
-        document.getElementById('pd-pib').innerText = cdata.pib;
-        document.getElementById('pd-croissance').innerText = cdata.croiss;
-        document.getElementById('pd-inflation').innerText = cdata.inf;
-        document.getElementById('pd-devise').innerText = cdata.dev;
-        document.getElementById('panel-data').style.display = 'block';
-      });
-  } catch (e) {
-    document.getElementById('africa-map').innerHTML = "<p style='padding:20px'>Erreur chargement carte.</p>";
-  }
-}
+                <div>
+                  <h4 style="color: #b45309; margin-top: 0;">🏢 En Présentiel (Le Dépôt Physique)</h4>
+                  <p style="font-size: 0.9rem; line-height: 1.6; color: #4b5563;">Au Sénégal, la présence physique et la courtoisie ouvrent encore d'immenses portes. Se déplacer montre un niveau de motivation supérieur.</p>
+                  <ul style="font-size: 0.85rem; color: #4b5563; padding-left: 20px; margin-top: 10px;">
+                    <li><strong>Astuce :</strong> Soignez votre tenue (tenue de bureau impeccable). Ne laissez pas simplement le CV à l'accueil si possible ; demandez poliment à saluer le Responsable des opérations ou le Chef d'agence.</li>
+                    <li><strong>Ciblage :</strong> Les agences de quartiers ou régionales en pleine croissance (comme à Touba ou dans les nouveaux pôles d'activités) ont souvent des besoins immédiats de renfort.</li>
+                  </ul>
+                </div>
 
-// --- 4. GLOSSAIRE ---
-const GLOSSARY = [
-  { term: "BRVM", def: "Bourse Régionale des Valeurs Mobilières. Marché financier de l'UEMOA.", theme: "Bourse" },
-  { term: "Eurobond", def: "Obligation émise en devise étrangère (USD/EUR) par un État.", theme: "Dette" },
-  { term: "BCEAO", def: "Banque Centrale des États de l'Afrique de l'Ouest.", theme: "Institution" },
-  { term: "Private Equity", def: "Capital-investissement. Prise de participation dans des entreprises non cotées.", theme: "Investissement" },
-  { term: "ZLECAf", def: "Zone de Libre-Échange Continentale Africaine.", theme: "Macroéconomie" }
-];
+              </div>
+            </div>
 
-function initGlossary() {
-  const render = (filter) => {
-    const filtered = GLOSSARY.filter(t => t.term.toLowerCase().includes(filter.toLowerCase()) || t.theme.toLowerCase().includes(filter.toLowerCase()));
-    document.getElementById('gloss-grid').innerHTML = filtered.map(t => `
-      <div class="gloss-card"><div class="gloss-term">${t.term}</div><div class="gloss-theme">${t.theme}</div><div class="gloss-def">${t.def}</div></div>
-    `).join('');
-  };
-  document.getElementById('gloss-search').addEventListener('input', e => render(e.target.value));
-  render("");
-}
+            <!-- PARTIE 3 : Pages Web & Contacts Directs -->
+            <div>
+              <h3 style="font-size: 1.5rem; color: #111827; border-left: 4px solid #6366f1; padding-left: 15px; margin-bottom: 25px;">3. Liens Utiles & Espaces Carrières</h3>
+              <div style="background: #eff6ff; padding: 20px; border-radius: 8px; border: 1px solid #bfdbfe;">
+                <p style="margin-top: 0; font-size: 0.95rem; color: #1e40af;">Voici une sélection de pages de recrutement officielles et de contacts accessibles en ligne pour soumettre directement votre dossier :</p>
+                
+                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.8;">
+                  <li style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #dbeafe;">
+                    <strong>🔗 CBAO - Réseau d'Agences :</strong> Pour localiser les agences stratégiques et préparer vos dépôts physiques (notamment les bureaux de Touba Khaïra ou Darou Marnane), consultez la page officielle <a href="https://cbaobank.com/fr/trouver-une-agence" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">Trouver une agence CBAO</a>.
+                  </li>
+                  <li style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #dbeafe;">
+                    <strong>🔗 Banque Islamique du Sénégal (BIS) :</strong> Vous pouvez soumettre vos candidatures spontanées directement sur leur portail dédié : <a href="https://bis-bank.com/carriere2/" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">Espace Carrière BIS</a>.
+                  </li>
+                  <li style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #dbeafe;">
+                    <strong>📩 COFEB - Banque Centrale :</strong> Le Centre d'Études Bancaires de la BCEAO gère des programmes de stages de haut niveau. Les demandes d'informations ou de partenariats académiques peuvent être initiées via leur adresse de contact : <code style="background: #e0e7ff; padding: 2px 6px; border-radius: 4px; color: #3730a3;">contact-cofeb@bceao.int</code>.
+                  </li>
+                  <li style="margin-bottom: 0;">
+                    <strong>🔗 Plateforme de Veille Locale :</strong> Pour suivre les offres quotidiennes de stages en Banque/Finance mutualisées à Dakar, l'un des meilleurs agrégateurs locaux reste <a href="https://opportunitesausenegal.sn" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline;">Opportunités au Sénégal</a>.
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-// --- FONCTIONS DE BASE ---
-function renderBlock(b){
-  if(b.t==='intro') return`<p class="art-body-intro">${b.v}</p>`;
-  if(b.t==='p') return`<p class="art-body-p">${b.v}</p>`;
-  if(b.t==='stats') return`<div class="art-highlight"><div class="art-highlight-title">${b.v}</div><ul>${b.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
-  return'';
-}
+          </div>
+        </section>
 
-function openModal(idx){
-  const art=DETAILS[idx]; if(!art)return;
-  document.getElementById('m-cat').textContent=art.cat;
-  document.getElementById('m-title').textContent=art.title;
-  document.getElementById('m-date').textContent=art.date;
-  document.getElementById('m-read').textContent=art.read;
-  document.getElementById('m-img').innerHTML=`<div class="modal-hero"><div class="cover-grad ${art.coverClass}"><span class="cg-icon" style="font-size:120px">${art.emoji}</span></div></div>`;
-  document.getElementById('m-content').innerHTML=art.blocks.map(renderBlock).join('');
-  document.getElementById('art-modal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeModal(){document.getElementById('art-modal').classList.remove('open');document.body.style.overflow='';}
+        <!-- Profile Section / Biography -->
+        <section id="bio" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+            <div style="background: var(--primary); color: #fff; padding: 40px; border-radius: 6px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap;">
+                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; border: 2px solid var(--accent);">
+                    MS
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <span style="color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Fondateur & Éditeur</span>
+                    <h2 style="font-size: 1.8rem; margin: 5px 0 10px 0;">Moustapha Sall</h2>
+                    <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.5;">Étudiant passionné en Finance et Ingénierie Financière. À travers The Finafrica News, je partage ma veille sur la dynamique économique africaine, l'évolution de la zone UEMOA et les rouages de la finance d'entreprise.</p>
+                </div>
+            </div>
+        </section>
 
-function renderArts(sec){
-  const g=document.getElementById('grid-'+sec); if(!g)return;
-  g.innerHTML=DATA[sec].map(a=>{
-    const action = typeof a.det==='number' ? `onclick="openModal(${a.det})"` : (a.url ? `onclick="window.open('${a.url}', '_blank')"` : '');
-    return`<article class="art" ${action}>
-      <div class="art-img-wrap"><div class="cover-grad ${a.coverClass}"><span class="cg-icon">${a.emoji}</span></div></div>
-      <div class="art-body">
-        <div class="art-cat">${a.emoji} ${a.cat}</div><h3 class="art-ttl">${a.title}</h3><p class="art-exc">${a.excerpt}</p>
-        <div class="art-foot"><span class="art-meta">${a.date} · ${a.read}</span><div class="art-arr"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5"/></svg></div></div>
-      </div>
-    </article>`;
-  }).join('');
-}
+    </main>
 
-// --- BOOTSTRAP ---
-document.addEventListener('DOMContentLoaded',()=>{
-  renderArts('marches'); renderArts('articles');
-  renderGrid('grid-classic',METIERS_CLASSIC); renderGrid('grid-pe',METIERS_PE); renderPenseurs();
-  initMarkets(); initNews(); initMap(); initGlossary();
-  
-  const d=new Date(), J=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'], M=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
-  document.getElementById('live-date').textContent=`${J[d.getDay()]} ${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
-  
-  window.addEventListener('scroll',()=> document.getElementById('bar').style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%');
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:0.06});
-  document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
-});
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>The Finafrica News</h2>
+                <p>Votre portail de référence pour décrypter l'actualité des marchés financiers, de la macroéconomie et des innovations financières en Afrique de l'Ouest et sur l'ensemble du continent.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Rubriques</h3>
+                <ul>
+                    <li><a href="#marches">Marchés</a></li>
+                    <li><a href="#economie">Économie</a></li>
+                    <li><a href="#guide-etudiant">Guide Étudiant</a></li>
+                    <li><a href="#carte">Carte Interactive</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Légal</h3>
+                <ul>
+                    <li><a href="#">Mentions Légales</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 The Finafrica News. Tous droits réservés.</p>
+        </div>
+    </footer>
 
-function renderGrid(id,items){ document.getElementById(id).innerHTML=items.map(m=>`<div class="career-card"><div class="career-icon">${m.emoji}</div><h3 class="career-title">${m.titre}</h3><p class="career-desc">${m.desc}</p><div class="career-tags">${m.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join(''); }
-function renderPenseurs(){ document.getElementById('grid-penseurs').innerHTML=PENSEURS.map(p=>`<div class="thinker-card"><div class="thinker-emoji">${p.emoji}</div><div class="thinker-name">${p.nom}</div><div class="thinker-years">${p.annees}</div><div class="thinker-role">${p.role}</div><p class="thinker-desc">${p.desc}</p><div class="thinker-impact"><span>Clés: </span>${p.impact}</div></div>`).join(''); }
-function openMM(){document.getElementById('mmenu').classList.add('open');document.body.style.overflow='hidden';}
-function closeMM(){document.getElementById('mmenu').classList.remove('open');document.body.style.overflow='';}
-function scrollCTA(){document.getElementById('subscribe').scrollIntoView({behavior:'smooth'});}
-</script>
+    <!-- JavaScript logic for Mobile Menu and Icons -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // DOM elements for mobile drawer functionality
+        const openMenuBtn = document.getElementById('openMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        // Functions to toggle mobile menu view states
+        function openToggle() {
+            mobileMenu.classList.add('active');
+            menuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeToggle() {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Event triggers for open and close commands
+        openMenuBtn.addEventListener('click', openToggle);
+        closeMenuBtn.addEventListener('click', closeToggle);
+        menuOverlay.addEventListener('click', closeToggle);
+
+        // Smooth close drawer when a terminal section navigation link is triggered
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeToggle);
+        });
+    </script>
 </body>
 </html>
