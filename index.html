@@ -301,6 +301,7 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
 
 <div id="mmenu">
   <button id="mclose" onclick="closeMM()">✕</button>
+  <a href="#monde"    onclick="closeMM()">Monde Financier</a>
   <a href="#marches"  onclick="closeMM()">Marchés</a>
   <a href="#economie" onclick="closeMM()">Économie</a>
   <a href="#articles" onclick="closeMM()">Articles</a>
@@ -333,6 +334,7 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
   <nav>
     <a href="#" class="logo"><svg width="46" height="46" viewBox="0 0 46 46" fill="none"><circle cx="23" cy="23" r="21.5" fill="#1D4E8F" stroke="#C9A84C" stroke-width="1.3"/><rect x="12" y="13" width="2.8" height="20" fill="#C9A84C" rx=".3"/><rect x="12" y="13" width="13" height="2.8" fill="#C9A84C" rx=".3"/><rect x="12" y="21" width="9.5" height="2.8" fill="#C9A84C" rx=".3"/><polyline points="26,30 29.5,24 33,26.5 37,18" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="37" cy="18" r="2" fill="#C9A84C"/><line x1="8" y1="38" x2="38" y2="38" stroke="#C9A84C" stroke-width=".6" opacity=".35"/></svg><div class="logo-txt"><span class="logo-the">The</span><span class="logo-name">Finafrica</span><span class="logo-sub">News</span></div></a>
     <ul class="nav-links">
+      <li><a href="#monde">Monde Financier</a></li>
       <li><a href="#marches">Marchés</a></li>
       <li><a href="#economie">Économie</a></li>
       <li><a href="#articles">Articles</a></li>
@@ -350,15 +352,15 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
     <div class="ticker-inner">
       <span class="ticker-lbl">LIVE</span>
       <div class="ticker-scroll"><div class="ticker-track">
-        <span class="ticker-item">BRVM Composite 218,46 <span class="t-up">▲+1,2%</span><em>|</em></span>
-        <span class="ticker-item">S&amp;P 500 : 5 421 pts <span class="t-up">▲+0,4%</span><em>|</em></span>
-        <span class="ticker-item">CAC 40 : 8 214 pts <span class="t-up">▲+0,3%</span><em>|</em></span>
-        <span class="ticker-item">SONATEL 14 500 FCFA <span class="t-up">▲+1,8%</span><em>|</em></span>
-        <span class="ticker-item">Or 2 480$/oz <span class="t-up">▲+0,5%</span><em>|</em></span>
-        <span class="ticker-item">Brent 83,14$ <span class="t-dn">▼−0,7%</span><em>|</em></span>
-        <span class="ticker-item">XOF/USD 600,42 <span class="t-up">▲+0,2%</span><em>|</em></span>
-        <span class="ticker-item">Bitcoin 67 400$ <span class="t-dn">▼−1,2%</span><em>|</em></span>
-        <span class="ticker-item">BCEAO Taux 3,5%<em>|</em></span>
+        <span class="ticker-item">BRVM Composite 437,24 pts <span class="t-dn">▼−0,66%</span><em>|</em></span>
+        <span class="ticker-item">S&amp;P 500 : 7 500,58 pts <span class="t-up">▲+1,08%</span><em>|</em></span>
+        <span class="ticker-item">CAC 40 : 8 421,14 pts <span class="t-dn">▼−0,55%</span><em>|</em></span>
+        <span class="ticker-item">SONATEL 28 500 FCFA <span class="t-dn">▼−3,36%</span><em>|</em></span>
+        <span class="ticker-item">Or ~3 200$/oz <span class="t-up">↑ Tensions géopol.</span><em>|</em></span>
+        <span class="ticker-item">Brent 77,33$ <span class="t-dn">▼−21% (1 mois)</span><em>|</em></span>
+        <span class="ticker-item">XOF/USD ~596 <em>|</em></span>
+        <span class="ticker-item">Nasdaq 26 517 pts <span class="t-up">▲+1,91%</span><em>|</em></span>
+        <span class="ticker-item">BCEAO Taux 3,25%<em>|</em></span>
       </div></div>
     </div>
   </div>
@@ -396,40 +398,45 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
   </div>
 </section>
 
+<div class="sec-hdr fu" id="monde"><div class="sec-hdr-c"><span class="sec-num">◆ 01 / 07</span><h2 class="sec-ttl">Monde Financier</h2></div></div>
+<p class="sec-desc fu">Fed, BCE, or, Bitcoin, pétrole : un tour d'horizon des grandes forces qui agitent la finance mondiale cette semaine — et leurs répercussions sur les économies africaines.</p>
+<div class="sec-refresh-row"><span class="last-upd" id="upd-monde">—</span><button class="btn-refresh" onclick="updateSection('monde')" data-sec="monde"><span class="spinner" id="spin-monde"></span>↻ Actualiser</button></div>
+<div class="grid-wrap"><div class="arts-3 fu" id="grid-monde"></div></div>
+
 <div class="mkt-bar fu">
   <div class="mkt-inner">
-    <div class="mkt-item"><div class="mkt-name">BRVM Composite</div><div class="mkt-val">218,46</div><div class="mkt-chg up">▲ +1,2%</div></div>
-    <div class="mkt-item"><div class="mkt-name">S&amp;P 500</div><div class="mkt-val">5 421</div><div class="mkt-chg up">▲ +0,4%</div></div>
-    <div class="mkt-item"><div class="mkt-name">CAC 40</div><div class="mkt-val">8 214</div><div class="mkt-chg up">▲ +0,3%</div></div>
-    <div class="mkt-item"><div class="mkt-name">Or / Ounce</div><div class="mkt-val">2 480 $</div><div class="mkt-chg up">▲ +0,5%</div></div>
-    <div class="mkt-item"><div class="mkt-name">Brent</div><div class="mkt-val">83,14 $</div><div class="mkt-chg dn">▼ −0,7%</div></div>
+    <div class="mkt-item"><div class="mkt-name">BRVM Composite</div><div class="mkt-val">437,24</div><div class="mkt-chg dn">▼ −0,66% · YTD +16,65%</div></div>
+    <div class="mkt-item"><div class="mkt-name">S&amp;P 500</div><div class="mkt-val">7 500</div><div class="mkt-chg up">▲ +1,08%</div></div>
+    <div class="mkt-item"><div class="mkt-name">CAC 40</div><div class="mkt-val">8 421</div><div class="mkt-chg dn">▼ −0,55%</div></div>
+    <div class="mkt-item"><div class="mkt-name">Or / Ounce</div><div class="mkt-val">~3 200 $</div><div class="mkt-chg up">↑ Tensions géopol.</div></div>
+    <div class="mkt-item"><div class="mkt-name">Brent</div><div class="mkt-val">77,33 $</div><div class="mkt-chg dn">▼ −21% (1 mois)</div></div>
   </div>
 </div>
 
-<div class="sec-hdr fu" id="marches"><div class="sec-hdr-c"><span class="sec-num">◆ 01 / 05</span><h2 class="sec-ttl">Marchés &amp; Investissements</h2></div></div>
+<div class="sec-hdr fu" id="marches"><div class="sec-hdr-c"><span class="sec-num">◆ 02 / 07</span><h2 class="sec-ttl">Marchés &amp; Investissements</h2></div></div>
 <div class="sec-refresh-row"><span class="last-upd" id="upd-marches">—</span><button class="btn-refresh" onclick="updateSection('marches')" data-sec="marches"><span class="spinner" id="spin-marches"></span>↻ Actualiser</button></div>
 <div class="grid-wrap"><div class="arts-3 fu" id="grid-marches"></div></div>
 
-<div class="sec-hdr fu" id="economie"><div class="sec-hdr-c"><span class="sec-num">◆ 02 / 05</span><h2 class="sec-ttl-b">Économie Sénégal · UEMOA · Monde</h2></div></div>
+<div class="sec-hdr fu" id="economie"><div class="sec-hdr-c"><span class="sec-num">◆ 03 / 07</span><h2 class="sec-ttl-b">Économie Sénégal · UEMOA · Monde</h2></div></div>
 <div class="sec-refresh-row"><span class="last-upd" id="upd-economie">—</span><button class="btn-refresh" onclick="updateSection('economie')" data-sec="economie"><span class="spinner" id="spin-economie"></span>↻ Actualiser</button></div>
 <div class="grid-wrap"><div class="arts-3 fu" id="grid-economie"></div></div>
 
-<div class="sec-hdr fu" id="articles"><div class="sec-hdr-c"><span class="sec-num">◆ 03 / 05</span><h2 class="sec-ttl">Articles Thématiques</h2></div></div>
+<div class="sec-hdr fu" id="articles"><div class="sec-hdr-c"><span class="sec-num">◆ 04 / 07</span><h2 class="sec-ttl">Articles Thématiques</h2></div></div>
 <div class="sec-refresh-row"><span class="last-upd" id="upd-articles">—</span><button class="btn-refresh" onclick="updateSection('articles')" data-sec="articles"><span class="spinner" id="spin-articles"></span>↻ Actualiser</button></div>
 <div class="grid-wrap"><div class="arts-4 fu" id="grid-articles"></div></div>
 
-<div class="sec-hdr fu" id="metiers"><div class="sec-hdr-c"><span class="sec-num">◆ 04 / 05</span><h2 class="sec-ttl-b">Métiers Après un Master Finance</h2></div></div>
+<div class="sec-hdr fu" id="metiers"><div class="sec-hdr-c"><span class="sec-num">◆ 05 / 07</span><h2 class="sec-ttl-b">Métiers Après un Master Finance</h2></div></div>
 <p class="sec-desc fu">Un master en finance ouvre l'accès aux carrières les plus recherchées de l'économie mondiale. Découvrez les débouchés classiques et les métiers du Private Equity — secteur en pleine expansion en Afrique.</p>
 <div class="sub-hdr fu"><h3>🏛️ Finance Classique &amp; Banque</h3></div>
 <div class="grid-wrap"><div class="arts-3 fu" id="grid-classic" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)"></div></div>
 <div class="sub-hdr fu" style="padding-top:28px"><h3>💎 Private Equity &amp; Investissement</h3></div>
 <div class="grid-wrap"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)" class="fu" id="grid-pe"></div></div>
 
-<div class="sec-hdr fu" id="penseurs"><div class="sec-hdr-c"><span class="sec-num">◆ 05 / 06</span><h2 class="sec-ttl">Grands Penseurs Économiques</h2></div></div>
+<div class="sec-hdr fu" id="penseurs"><div class="sec-hdr-c"><span class="sec-num">◆ 06 / 07</span><h2 class="sec-ttl">Grands Penseurs Économiques</h2></div></div>
 <p class="sec-desc fu">Ces économistes ont façonné notre compréhension du monde — leurs idées continuent de guider banques centrales, politiques économiques et stratégies d'investissement à travers le globe.</p>
 <div class="grid-wrap"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)" class="fu" id="grid-penseurs"></div></div>
 
-<div class="sec-hdr fu" id="guide"><div class="sec-hdr-c"><span class="sec-num">◆ 06 / 06</span><h2 class="sec-ttl-b">Guide Étudiant — Trouver son Stage</h2></div></div>
+<div class="sec-hdr fu" id="guide"><div class="sec-hdr-c"><span class="sec-num">◆ 07 / 07</span><h2 class="sec-ttl-b">Guide Étudiant — Trouver son Stage</h2></div></div>
 <p class="sec-desc fu">Un guide pratique pour les étudiants en finance : les institutions à cibler, les meilleures astuces pour décrocher un stage, et des contacts et pages utiles à suivre dès aujourd'hui.</p>
 
 <div class="grid-wrap fu">
@@ -534,17 +541,17 @@ footer{border-top:1px solid var(--border);padding:60px 5% 28px;background:var(--
 <script>
 const DATA={
   marches:[
-    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au S1 2026",excerpt:"La BRVM affiche une performance solide avec un indice Composite à 218,46 pts. SONATEL progresse de +8,3% depuis janvier.",date:"7 Juin 2026",read:"8 min",det:0, coverType:"grad", coverClass:"cg-brvm"},
-    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA et des semi-conducteurs se poursuit",excerpt:"Nvidia, Microsoft et Apple tirent l'indice vers de nouveaux records. Ce que cela signifie pour l'investisseur africain.",date:"6 Juin 2026",read:"6 min",det:1, coverType:"grad", coverClass:"cg-sp500"},
-    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 200 pts : banques et luxe tirent Paris malgré les tensions",excerpt:"BNP Paribas, LVMH et TotalEnergies soutiennent l'indice. Analyse des implications pour les économies africaines francophones.",date:"6 Juin 2026",read:"5 min",det:2, coverType:"grad", coverClass:"cg-cac40"}
+    {emoji:"📈",cat:"BRVM — Performances",title:"SONATEL recule à 28 500 FCFA mais la BRVM reste en hausse de +16,65% sur l'année",excerpt:"L'indice BRVM Composite abandonne 0,66% à 437,24 pts sous le poids de SONATEL (−3,36%), après un sommet historique à 30 000 FCFA le 3 juin. Le géant sénégalais a réalisé 114 milliards FCFA de bénéfice au T1 2026.",date:"20 Juin 2026",read:"8 min",det:0, coverType:"grad", coverClass:"cg-brvm"},
+    {emoji:"🇺🇸",cat:"S&P 500 — Marchés US",title:"S&P 500 franchit les 7 500 pts : un marché américain au plus haut malgré les turbulences géopolitiques",excerpt:"Le S&P 500 atteint 7 500,58 pts (+1,08%) le 19 juin 2026, pendant que le Nasdaq bondit de +1,91% à 26 517 pts. VIX à 16,78 — les marchés digèrent les tensions Iran-USA sans paniquer.",date:"19 Juin 2026",read:"6 min",det:1, coverType:"grad", coverClass:"cg-sp500"},
+    {emoji:"🇫🇷",cat:"CAC 40 — Marchés Européens",title:"CAC 40 à 8 421 pts : Paris se redresse après une correction de 13% liée à la crise Iran-USA-Israël",excerpt:"Après un record historique à 8 642 pts le 26 février, le CAC 40 avait plongé de ~13%. L'indice rebondit à 8 421 pts (−0,55% sur la journée) et flirte à nouveau avec les 8 500 pts en ce 19 juin.",date:"19 Juin 2026",read:"5 min",det:2, coverType:"grad", coverClass:"cg-cac40"}
   ],
   economie:[
-    {emoji:"🇸🇳",cat:"Sénégal — Pétrole",title:"Sangomar en production : les revenus pétroliers transforment le budget",excerpt:"Le champ offshore de Sangomar génère ses premières royalties. Le gouvernement arbitre entre investissement et fonds souverain.",date:"7 Juin 2026",read:"7 min",det:3, coverType:"grad", coverClass:"cg-sangomar"},
-    {emoji:"🏗️",cat:"Sénégal — Infrastructures",title:"Plan Sénégal Émergent 2035 : bilan des grands chantiers et impact",excerpt:"Autoroutes, port de Ndayane, TER : le PSE avance. Analyse des projets phares et de leur contribution à la croissance.",date:"5 Juin 2026",read:"6 min",det:4, coverType:"grad", coverClass:"cg-pse"},
-    {emoji:"👨‍🎓",cat:"Sénégal — Capital humain",title:"Education et emploi au Sénégal : défis d'une économie en transition",excerpt:"Avec les revenus pétroliers, le Sénégal doit investir massivement dans son capital humain et la formation professionnelle.",date:"4 Juin 2026",read:"5 min",det:5, coverType:"grad", coverClass:"cg-educ"},
-    {emoji:"🌍",cat:"UEMOA & BCEAO",title:"BCEAO : taux à 3,5% — implications pour les 8 pays membres",excerpt:"La Banque Centrale reconduit sa politique monétaire. Ce statu quo impacte différemment le Sénégal et la sous-région.",date:"5 Juin 2026",read:"5 min",det:6, coverType:"grad", coverClass:"cg-bceao"},
-    {emoji:"🤝",cat:"Afrique — ZLECAf",title:"Zone de libre-échange africaine : les échanges intra-africains progressent",excerpt:"Les premières données confirment la montée en puissance de la ZLECAf. Commerce entre États membres en hausse historique.",date:"4 Juin 2026",read:"5 min",det:7, coverType:"grad", coverClass:"cg-zlecaf"},
-    {emoji:"🌐",cat:"Économie Mondiale",title:"FMI : croissance mondiale à 3,2% — l'Afrique subsaharienne en tête",excerpt:"Tensions commerciales USA-Chine, ralentissement européen, mais une Afrique subsaharienne dynamique grâce à ses ressources.",date:"3 Juin 2026",read:"6 min",det:8, coverType:"grad", coverClass:"cg-fmi"}
+    {emoji:"🇸🇳",cat:"Sénégal — Alerte économique",title:"Croissance révisée à 2,5% en 2026 : dette à 113% du PIB, FMI suspend son programme de 1,8 Mds$",excerpt:"Après 6,7% de croissance en 2025, le Sénégal revoit fortement ses prévisions à la baisse. La production de Sangomar décline, les recettes fiscales manquent de 500 Mds FCFA et le FMI suspend son programme en attente de réformes.",date:"20 Juin 2026",read:"7 min",det:3, coverType:"grad", coverClass:"cg-sangomar"},
+    {emoji:"🛢️",cat:"Sénégal — Hydrocarbures",title:"Sangomar : 56 millions de barils produits, mais seulement 76 Mds FCFA attendus pour l'État en 2026",excerpt:"Le champ offshore a atteint sa pleine capacité de 100 000 bbl/j et produit 56,13 millions de barils depuis son démarrage. Pourtant, le PM Sonko exprime sa déception face aux recettes pétrolières de l'État — 76 milliards FCFA sur un budget de 6 000 milliards.",date:"18 Juin 2026",read:"6 min",det:4, coverType:"grad", coverClass:"cg-pse"},
+    {emoji:"📉",cat:"Sénégal — Finances publiques",title:"Déficit de 500 Mds FCFA, dette à 132% du PIB parapublic : le Sénégal face au défi budgétaire post-pétrole",excerpt:"Les recettes fiscales 2026 sont en baisse de 9% par rapport aux prévisions, soit 500 milliards de FCFA manquants. Dans ce contexte, la consolidation budgétaire à l'horizon 2027 s'annonce comme un exercice délicat pour le nouveau gouvernement.",date:"15 Juin 2026",read:"5 min",det:5, coverType:"grad", coverClass:"cg-educ"},
+    {emoji:"🏦",cat:"UEMOA & BCEAO",title:"BCEAO maintient son taux à 3,25% malgré le choc pétrolier mondial et la volatilité géopolitique",excerpt:"Face aux tensions Iran-USA qui ont propulsé le Brent à 110$/baril en avril, la BCEAO choisit la prudence. Croissance UEMOA attendue à 6,1% en 2026, inflation contenue à 1,6% — bien en deçà du reste du monde.",date:"16 Juin 2026",read:"5 min",det:6, coverType:"grad", coverClass:"cg-bceao"},
+    {emoji:"🛤️",cat:"Afrique — Intégration régionale",title:"ZLECAf : malgré les incertitudes géopolitiques mondiales, le commerce intra-africain résiste et progresse",excerpt:"Dans un monde fragmenté par les tensions USA-Chine et le choc pétrolier, la Zone de Libre-Échange Continentale Africaine poursuit sa montée en puissance comme rempart contre les turbulences extérieures.",date:"14 Juin 2026",read:"5 min",det:7, coverType:"grad", coverClass:"cg-zlecaf"},
+    {emoji:"🌐",cat:"Économie Mondiale",title:"Crise Iran-USA, Brent à 77$ après un pic à 110$ : l'économie mondiale à 3,1% navigue en eaux agitées",excerpt:"La fermeture partielle du détroit d'Ormuz a propulsé le Brent à 110$/baril avant sa correction à 77$. Croissance mondiale révisée à 3,1%, inflation mondiale à 4,4% — un choc qui touche directement les importateurs africains.",date:"19 Juin 2026",read:"6 min",det:8, coverType:"grad", coverClass:"cg-fmi"}
   ],
   articles:[
     {emoji:"🥇",cat:"L'Or",title:"L'or à 2 480$/once : valeur refuge et couverture contre l'inflation",excerpt:"Achats massifs des banques centrales : décryptage du métal précieux et stratégies pour s'y exposer depuis l'Afrique.",date:"6 Juin 2026",read:"8 min", coverType:"grad", coverClass:"cg-or"},
@@ -556,37 +563,37 @@ const DATA={
 
 const DETAILS=[
   {cat:"📈 BRVM — Performances",emoji:"📈",coverType:"grad",coverClass:"cg-brvm",title:"SONATEL, ORANGE CI et ECOBANK : les stars de la BRVM au premier semestre 2026",date:"7 Juin 2026",read:"8 min de lecture",blocks:[
-    {t:"intro",v:"La Bourse Régionale des Valeurs Mobilières d'Abidjan (BRVM) confirme sa dynamique haussière. Avec un indice BRVM Composite à 218,46 points en progression de +7,4% depuis janvier, la bourse de l'UEMOA affiche une résilience remarquable dans un contexte mondial incertain."},
-    {t:"sub",v:"Les valeurs vedettes du T1 2026"},
-    {t:"p",v:"SONATEL (Sénégal Télécom) s'impose comme la locomotive de la BRVM. Cotée à 14 500 FCFA par action, elle affiche +8,3% depuis janvier, portée par la croissance du Mobile Money et l'expansion d'Orange Money en Afrique de l'Ouest. Sa capitalisation dépasse 1 200 milliards FCFA — première capitalisation de la bourse régionale."},
-    {t:"p",v:"ORANGE CI suit avec +5,2% de performance. ECOBANK Transnational Incorporated (ETI), la plus grande banque panafricaine cotée sur 3 bourses africaines, complète ce podium avec +6,7%, profitant de la reprise dans ses 33 marchés d'Afrique subsaharienne."},
-    {t:"stats",v:"📊 Chiffres clés — BRVM au 7 Juin 2026",items:["BRVM Composite : 218,46 pts (+7,4% YTD)","BRVM 10 : 342,18 pts (+6,1% YTD)","Volume moyen hebdo : 2,4 Mds FCFA","Capitalisation totale : 11 200 Mds FCFA"]},
+    {t:"intro",v:"La Bourse Régionale des Valeurs Mobilières d'Abidjan (BRVM) enregistre une séance de repli le 19 juin 2026, l'indice BRVM Composite abandonnant 0,66% à 437,24 points. Cette correction technique met fin à plusieurs séances de records historiques. Sur l'année, l'indice reste en hausse de +16,65% — une performance remarquable qui confirme l'attractivité des marchés de capitaux ouest-africains."},
+    {t:"sub",v:"SONATEL : entre records et consolidation"},
+    {t:"p",v:"SONATEL (Sénégal Télécom) a touché le sommet historique de 30 000 FCFA par action le 3 juin 2026, s'emparant du marché et portant l'indice à des records. Le 5 juin, la valeur recule de 3,36% à 28 500 FCFA — le troisième rang des baisses du jour mais la plus grosse perte de capitalisation : 99 milliards FCFA effacés en une seule séance. Sa capitalisation boursière reste supérieure à 2 800 milliards FCFA, première capitalisation de la BRVM. Les fondamentaux sont solides : 114 milliards FCFA de bénéfice net au T1 2026, et 413 milliards sur l'exercice complet 2025."},
+    {t:"p",v:"Lors de la dernière séance, le marché a toutefois montré sa résilience : 23 valeurs terminaient en hausse contre 18 en baisse. ONATEL enregistrait le plus fort recul avec −5,37% à 2 905 FCFA, et SERVAIR ABIDJAN CI suivait avec −4,92% à 2 900 FCFA. ECOBANK Transnational Incorporated (ETI) reste un pilier de la cote, présent dans 33 pays africains et bénéficiant de la reprise économique régionale."},
+    {t:"stats",v:"📊 Chiffres clés — BRVM au 19 Juin 2026",items:["BRVM Composite : 437,24 pts (▼−0,66% j.) · YTD +16,65%","BRVM-30 : 205,37 pts (▼−0,83%)","SONATEL : 28 500 FCFA (▼−3,36%) · Sommet historique : 30 000 FCFA","Capitalisation SONATEL : ~2 840 Mds FCFA"]},
     {t:"sub",v:"Comment investir à la BRVM depuis le Sénégal ?"},
     {t:"p",v:"Pour s'exposer à la BRVM, plusieurs options : ouvrir un compte-titres auprès d'une SGI agréée (SGI-BIS, SGI-Senfinance, BICS), acheter des parts d'OPCVM investis en actions BRVM, ou via les Plans d'Épargne en Actions (PEA). Les commissions de courtage oscillent entre 0,6% et 1,2% de la transaction."},
-    {t:"p",v:"Les analystes tablent sur un indice BRVM Composite entre 225 et 232 points d'ici décembre 2026, sous réserve d'une stabilité politique dans la zone et d'une poursuite de la dynamique de croissance régionale estimée à +6,2%."}
+    {t:"p",v:"Avec une progression annuelle de +16,65% et une économie UEMOA attendue en croissance de 6,1% en 2026, les fondamentaux de la BRVM restent solides. La volatilité actuelle autour de SONATEL reflète davantage des prises de profit après un rally exceptionnel qu'une dégradation des perspectives. Les SGI (Sociétés de Gestion et d'Intermédiation) recommandent un positionnement progressif sur les valeurs décotées comme BICICI ou SGB-CI."}
   ]},
   {cat:"🇺🇸 S&P 500 — Marchés US",emoji:"🇺🇸",coverType:"grad",coverClass:"cg-sp500",title:"S&P 500 au-dessus des 5 400 pts : le rally de l'IA et des semi-conducteurs se poursuit en 2026",date:"6 Juin 2026",read:"6 min de lecture",blocks:[
-    {t:"intro",v:"L'indice S&P 500 a franchi le cap symbolique des 5 400 points — un nouveau record historique — porté par les résultats trimestriels exceptionnels des géants de la technologie et une inflation en normalisation progressive."},
+    {t:"intro",v:"Le S&P 500 a clôturé à 7 500,58 points le 19 juin 2026, en hausse de +1,08%. Le Nasdaq Composite bondissait simultanément de +1,91% à 26 517,93 points, porté par la reprise des valeurs technologiques après la volatilité liée aux tensions géopolitiques Iran-USA-Israël. Wall Street digère ces turbulences avec une résilience remarquable."},
     {t:"sub",v:"Le rally de l'intelligence artificielle"},
-    {t:"p",v:"Nvidia reste le symbole de ce bull market : capitalisation au-dessus de 3 000 milliards de dollars. Microsoft (+18% YTD), Apple (+12% YTD) et Alphabet (+15% YTD) complètent un secteur tech qui représente 35% de la capitalisation totale du S&P 500."},
-    {t:"stats",v:"📊 Le S&P 500 en chiffres",items:["Niveau : 5 421 pts (+12,3% YTD)","PE ratio : 22,4x les bénéfices 2026","Volatilité VIX : 14,2 (calme)","Meilleur secteur : Technologie +18%"]},
+    {t:"p",v:"Le Nasdaq (+1,91%) surperforme le S&P 500 ce 19 juin, signe que les valeurs technologiques reprennent la main après une période d'incertitude. Le Dow Jones progresse plus modestement (+0,14% à 51 564,70 pts). Le VIX — indice de la peur — s'établit à 16,78, niveau indiquant une volatilité modérée et une relative sérénité des investisseurs malgré le contexte géopolitique tendu."},
+    {t:"stats",v:"📊 Marchés US — Clôture 19 Juin 2026",items:["S&P 500 : 7 500,58 pts (▲+1,08%)","Nasdaq Composite : 26 517,93 pts (▲+1,91%)","Dow Jones : 51 564,70 pts (▲+0,14%)","VIX (volatilité) : 16,78 — modérée"]},
     {t:"sub",v:"Impact sur les investisseurs africains"},
     {t:"p",v:"Un S&P 500 en hausse renforce le dollar, ce qui renchérit les importations africaines (pétrole, équipements). Pour s'exposer, des ETF comme le SPDR S&P 500 (SPY) ou le iShares Core S&P 500 (IVV) sont accessibles via Interactive Brokers, eToro ou Revolut — sous réserve de la réglementation de change applicable."}
   ]},
   {cat:"🇫🇷 CAC 40 — Marchés Européens",emoji:"🇫🇷",coverType:"grad",coverClass:"cg-cac40",title:"CAC 40 à 8 200 pts : banques et luxe tirent la bourse parisienne malgré les tensions géopolitiques",date:"6 Juin 2026",read:"5 min de lecture",blocks:[
-    {t:"intro",v:"Le CAC 40 flirte avec les 8 200 points (+5,8% depuis janvier). Cette progression masque des disparités sectorielles : les valeurs bancaires et du luxe tirent l'indice, tandis que les industriels pâtissent d'un contexte géopolitique européen tendu."},
+    {t:"intro",v:"Le CAC 40 flirte avec les 8 500 points en ce 19 juin 2026 (−0,55% sur la journée à 8 421,14 pts), dans la continuité d'un rebond amorcé après une correction sévère. Après un record historique à 8 642 points le 26 février, l'indice avait chuté de près de 13% dans le sillage des tensions géopolitiques Iran-USA-Israël, avant de remonter progressivement. Paris reste derrière New York sur l'année, mais confirme sa résilience."},
     {t:"sub",v:"Luxe et banques : les locomotives du CAC 40"},
-    {t:"p",v:"LVMH résiste grâce à la vigueur des marchés américain et japonais. Hermès (+9% YTD), Kering (+4% YTD) et BNP Paribas (+11% YTD) — ce dernier très présent en Afrique subsaharienne — soutiennent l'indice."},
-    {t:"stats",v:"📊 Le CAC 40 en chiffres",items:["Niveau : 8 214 pts (+5,8% YTD)","Luxe : +8,2% YTD","Rendement dividende moyen : 3,1%","EUR/USD : 1,082 (+1,2%)"]},
+    {t:"p",v:"La saison des résultats trimestriels T1 2026 a été globalement satisfaisante pour le CAC 40, notamment dans les secteurs de l'énergie (TotalEnergies), de la défense (Thales, Airbus) et des services aux entreprises. La BCE a maintenu ses taux inchangés à 2% lors de sa réunion du 30 avril face à une inflation remontée à 3% dans la zone euro sous l'effet du choc pétrolier — le Brent ayant flirté avec 110 dollars en avril. La croissance du PIB de la zone euro a ralenti à 0,8% en glissement annuel au T1 2026."},
+    {t:"stats",v:"📊 CAC 40 — Données au 19 Juin 2026",items:["Clôture : 8 421,14 pts (▼−0,55%)","Record historique 2026 : 8 642 pts (26 fév.)","BCE taux : 2% · Inflation zone euro : 3%","Croissance zone euro T1 2026 : +0,8% YoY"]},
     {t:"p",v:"TotalEnergies (CAC 40) est actionnaire majeur du champ Sangomar au Sénégal. BNP et Société Générale financent le commerce international africain. La filiale Sonatel est détenue à 42,3% par Orange SA, cotée au CAC 40 — raison de plus pour suivre cet indice depuis Dakar."}
   ]},
-  {cat:"🇸🇳 Sénégal — Pétrole",emoji:"🇸🇳",coverType:"grad",coverClass:"cg-sangomar",title:"Sangomar en production : les revenus pétroliers transforment le budget sénégalais 2026",date:"7 Juin 2026",read:"7 min de lecture",blocks:[
+  {cat:"🇸🇳 Sénégal — Pétrole",emoji:"🇸🇳",coverType:"grad",coverClass:"cg-sangomar",title:"Sénégal : croissance à 2,5% en 2026, dette à 113% du PIB — le FMI suspend son programme",date:"7 Juin 2026",read:"7 min de lecture",blocks:[
     {t:"intro",v:"Le champ pétrolier offshore de Sangomar, entré en production fin 2024, génère ses premières royalties significatives en 2026. Une transformation structurelle pour les finances publiques sénégalaises — et un test de maturité institutionnelle pour un pays qui a longtemps regardé ses voisins gérer, parfois mal, la richesse pétrolière."},
-    {t:"sub",v:"Les chiffres de la transformation budgétaire"},
-    {t:"p",v:"Sangomar produit actuellement environ 100 000 barils/jour, avec des projections de 120 000 barils/jour d'ici fin 2026. Au prix actuel du Brent (83$/baril), et avec un taux de royalties de l'État estimé à 18-22%, les recettes directes pour le Trésor sénégalais s'élèvent à environ 450-520 milliards FCFA sur l'année 2026. Un chiffre significatif pour un budget national de moins de 5 000 milliards FCFA."},
-    {t:"stats",v:"📊 Chiffres clés — Pétrole sénégalais 2026",items:["Production Sangomar : ~100 000 bbl/jour","Recettes estimées 2026 : 450-520 Mds FCFA","Part de l'État : ~18-22% des royalties","Partenaire opérateur : Woodside Energy (Australie)"]},
-    {t:"sub",v:"Fonds souverain ou dépenses courantes ? Le grand arbitrage"},
-    {t:"p",v:"Le gouvernement sénégalais fait face à un choix stratégique fondamental : consommer les revenus pétroliers pour financer des dépenses courantes (subventions, salaires, fonctionnement) ou les épargner dans un fonds souverain intergénérationnel. La Norvège a fait le choix de l'épargne systématique — son fonds souverain pèse aujourd'hui plus de 1 700 milliards de dollars. Le Nigeria a préféré la consommation immédiate — avec des résultats décevants."},
+    {t:"sub",v:"Un ralentissement brutal après l'euphorie pétrolière"},
+    {t:"p",v:"Le champ offshore de Sangomar a certes atteint sa capacité nominale de 100 000 barils/jour et produit au total 56,13 millions de barils depuis son démarrage. En janvier 2026 seul, 3,8 millions de barils ont été expédiés via 58 cargaisons internationales. Mais la contribution réelle à l'État déçoit : seulement 76 milliards FCFA de recettes pétrolières sont attendus en 2026 sur un budget total de 6 000 milliards FCFA. Le Premier ministre Ousmane Sonko a exprimé publiquement sa déception devant l'Assemblée nationale, évoquant des ressources 'bazardées' par les anciens régimes."},
+    {t:"stats",v:"📊 Économie sénégalaise — Données officielles 2026",items:["Croissance 2026 : 2,5% (vs 6,7% en 2025)","Recettes pétrolières État 2026 : ~76 Mds FCFA","Dette publique : 113% du PIB fin 2025","Déficit recettes fiscales : −9% (−500 Mds FCFA)"]},
+    {t:"sub",v:"FMI suspendu, dette colossale : le chantier de la consolidation"},
+    {t:"p",v:"Le FMI a suspendu son programme d'aide de 1,8 milliard de dollars conclu en 2023 après avoir découvert que les chiffres réels de la dette et du déficit avaient été dissimulés sous l'ancien régime. La dette du secteur public et parapublic est estimée à 132% du PIB fin 2024, et la dette publique stricto sensu à 113% fin 2025. Le gouvernement du Président Faye et du PM Sonko a hérité d'une situation budgétaire bien plus dégradée que prévu — ce qui explique le réajustement douloureux mais nécessaire des prévisions de croissance."},
     {t:"p",v:"Le risque de la 'maladie hollandaise' est réel : un afflux massif de devises peut apprécier la monnaie locale, pénaliser les exportations non-pétrolières et fragiliser l'agriculture et l'industrie. La gestion transparente et institutionnellement robuste de ces ressources est la condition d'un développement économique durable pour le Sénégal."}
   ]},
   {cat:"🏗️ Sénégal — Infrastructures",emoji:"🏗️",coverType:"grad",coverClass:"cg-pse",title:"Plan Sénégal Émergent 2035 : bilan des grands chantiers et impact sur la croissance",date:"5 Juin 2026",read:"6 min de lecture",blocks:[
@@ -608,10 +615,10 @@ const DETAILS=[
     {t:"p",v:"La sénégalisation des emplois dans le secteur pétrolier est un enjeu majeur. Les contrats pétroliers prévoient des clauses de 'local content' imposant aux opérateurs de recruter et former des nationaux. Sur les 3 000 emplois directs attendus sur le champ de Sangomar à plein régime, l'objectif est d'atteindre 60% d'employés sénégalais d'ici 2028."}
   ]},
   {cat:"🌍 UEMOA & BCEAO",emoji:"🌍",coverType:"grad",coverClass:"cg-bceao",title:"BCEAO : taux à 3,5% — implications pour les 8 pays membres de l'Union",date:"5 Juin 2026",read:"5 min de lecture",blocks:[
-    {t:"intro",v:"La Banque Centrale des États de l'Afrique de l'Ouest (BCEAO) a reconduit son taux directeur à 3,5% lors de sa dernière réunion du Comité de Politique Monétaire. Une décision qui reflète le délicat équilibre entre lutte contre l'inflation, soutien à la croissance et stabilité financière dans une zone à 8 pays et 140 millions d'habitants."},
+    {t:"intro",v:"Réuni lors de sa deuxième session 2026, le Comité de Politique Monétaire de la BCEAO a décidé de maintenir inchangés ses principaux taux directeurs : le taux minimum de soumission aux appels d'offres d'injection de liquidité reste à 3,25%, et le guichet de prêt marginal à 5,25%. Face à un choc pétrolier mondial (Brent à 110$/baril en avril) et à des tensions géopolitiques inédites, la BCEAO choisit délibérément la prudence, estimant que les fondamentaux économiques de l'UEMOA demeurent solides."},
     {t:"sub",v:"Mécanisme de transmission : comment le taux directeur impacte votre quotidien"},
     {t:"p",v:"Le taux directeur de la BCEAO est le taux auquel la banque centrale prête aux banques commerciales. Quand ce taux est élevé, les banques empruntent plus cher et répercutent cette hausse sur leurs clients (crédits immobiliers, crédits à la consommation, crédits aux entreprises). Un taux à 3,5% signifie que les taux de crédit aux particuliers oscillent entre 8% et 14% dans la zone UEMOA — des niveaux qui freinent l'investissement privé."},
-    {t:"stats",v:"📊 Indicateurs monétaires UEMOA — Juin 2026",items:["Taux directeur BCEAO : 3,50%","Inflation zone UEMOA : 3,1% (en baisse)","Croissance PIB UEMOA 2026 estimée : +6,2%","Réserves de change : 7,2 mois d'importations"]},
+    {t:"stats",v:"📊 BCEAO & UEMOA — Données officielles Juin 2026",items:["Taux min. soumission BCEAO : 3,25% · Prêt marginal : 5,25%","Inflation UEMOA 2026 : 1,6% (vs 4,4% mondial)","Croissance UEMOA 2026 : 6,1% (BCEAO)","Inflation février 2026 : −0,1% en glissement annuel"]},
     {t:"sub",v:"Impacts différenciés selon les pays"},
     {t:"p",v:"Le maintien du taux à 3,5% a des effets asymétriques dans la zone. La Côte d'Ivoire et le Sénégal, économies les plus diversifiées, absorbent mieux ce niveau de taux grâce à un secteur privé robuste et un accès aux marchés de capitaux (BRVM, Eurobonds). Le Mali, le Niger et le Burkina Faso — affectés par l'instabilité sécuritaire — souffrent davantage de conditions de crédit restrictives qui pénalisent la relance économique."}
   ]},
@@ -624,11 +631,11 @@ const DETAILS=[
     {t:"p",v:"Malgré les progrès, la ZLECAf fait face à des obstacles structurels : infrastructures de transport insuffisantes (routes, rails) entre pays africains, procédures douanières encore complexes, barrières non-tarifaires (normes sanitaires, réglementations divergentes), et résistances des secteurs industriels nationaux à la concurrence africaine. Le plein potentiel de la ZLECAf — estimé à 450 milliards de dollars de commerce additionnel par an par la CEA — est encore loin d'être atteint."}
   ]},
   {cat:"🌐 Économie Mondiale",emoji:"🌐",coverType:"grad",coverClass:"cg-fmi",title:"FMI : croissance mondiale à 3,2% — l'Afrique subsaharienne à 4,2%, meilleure région du globe",date:"3 Juin 2026",read:"6 min de lecture",blocks:[
-    {t:"intro",v:"Dans ses dernières Perspectives de l'économie mondiale, le Fonds Monétaire International livre un tableau contrasté : une croissance mondiale à 3,2% en 2026, ralentie par les tensions commerciales USA-Chine et le durcissement des conditions financières mondiales. Mais l'Afrique subsaharienne tire son épingle du jeu avec +4,2% — meilleure performance de toutes les régions du monde."},
+    {t:"intro",v:"La crise Iran-USA-Israël de 2026 a propulsé le Brent jusqu'à 110 dollars le baril en avril, avant sa correction à 77,33$ le 19 juin — soit une chute de 21% en un mois après la réouverture partielle du détroit d'Ormuz. Ce choc énergétique a obligé le FMI à réviser à la hausse ses prévisions d'inflation mondiale (4,4%) et à dégrader légèrement ses perspectives de croissance (3,1%). Mais dans ce chaos, l'UEMOA affiche remarquablement une inflation de seulement 1,6% — parmi les plus basses au monde."},
     {t:"sub",v:"Pourquoi l'Afrique subsaharienne surperforme"},
     {t:"p",v:"Trois facteurs expliquent cette surperformance relative. Premièrement, la montée en puissance des nouveaux producteurs d'hydrocarbures (Sénégal, Mozambique, Ouganda) qui gonflent les PIB nationaux et les revenus d'exportation. Deuxièmement, l'essor des services numériques et du mobile money qui crée une économie informelle en voie de formalisation. Troisièmement, la démographie — avec 60% de la population africaine âgée de moins de 25 ans, le continent dispose d'un dividende démographique potentiel considérable."},
-    {t:"stats",v:"📊 FMI — Prévisions de croissance 2026",items:["Afrique subsaharienne : +4,2%","Monde : +3,2%","Zone euro : +1,1%","États-Unis : +2,1%","Chine : +4,6%","Sénégal : +6,8% (pétro-boom)"]},
-    {t:"p",v:"Les principaux risques pour l'Afrique subsaharienne en 2026 restent la volatilité des prix des matières premières (pétrole, cacao, phosphates), les niveaux de dette publique élevés dans certains pays (Ghana, Zambie, Kenya), et l'instabilité sécuritaire dans le Sahel. La gestion prudente des ressources naturelles et l'investissement dans le capital humain seront déterminants pour transformer cette croissance conjoncturelle en développement structurel durable."}
+    {t:"stats",v:"📊 Économie mondiale — Données 19 Juin 2026",items:["Croissance mondiale (FMI) : 3,1%","Inflation mondiale : 4,4% (révisée à la hausse)","Brent : 77,33$/baril (▼−21% en 1 mois)","Zone euro croissance T1 2026 : +0,8% YoY"]},
+    {t:"p",v:"Pour les économies importatrices de pétrole africaines (dont le Sénégal), la correction du Brent de 110$ à 77$ est une bouffée d'air : elle réduit la facture des importations et desserre la pression sur les budgets publics. Les pays producteurs (Sénégal, Mozambique, Ouganda) voient au contraire leurs projections de revenus se dégrader légèrement. Le vrai défi africain en 2026 reste la diversification économique : construire une croissance robuste indépendamment des cycles des matières premières est l'enjeu structurel de la décennie."}
   ]}
 ];
 
